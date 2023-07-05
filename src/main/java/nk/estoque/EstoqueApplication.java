@@ -1,4 +1,4 @@
-package NK.estoque;
+package nk.estoque;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
