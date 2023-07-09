@@ -8,7 +8,9 @@ import java.util.List;
 public interface TodosProdutos {
     List<Produto> listaPaginada();
 
-//    void criarProduto(Produto produto);
-//
-//    Produto atualizarProduto(Long id, Produto produto);
+    Produto criar(Produto produto);
+
+    Produto atualizarProduto(Long id, Produto novoProduto);
+
+    void deletarProduto(Long id);
 }
