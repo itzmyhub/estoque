@@ -1,4 +1,4 @@
-package NK.estoque.domain.produto;
+package nk.estoque.application.infraestructure.web.produto;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 

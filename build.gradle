@@ -28,7 +28,7 @@ tasks.named('test', Test) {
     useJUnitPlatform()
 }
 
-group = 'NK'
+group = 'nk'
 version = '0.0.1-SNAPSHOT'
 description = 'estoque'
 java {

@@ -1,31 +1,40 @@
-package nk.estoque.infraestructure.web;
+package nk.estoque.application.infraestructure.web.produto;
 
-import NK.estoque.domain.produto.Produto;
-import NK.estoque.domain.produto.TodosProdutos;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nk.estoque.application.infraestructure.entity.Produto;
+import nk.estoque.domain.produto.TodosProdutos;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
 class ProdutoControllerTest {
+    private static final int CODIGO_PRODUTO = 110;
+    private static final int QUANTIDADE_ITENS = 2;
+    private static final BigDecimal VALOR = new BigDecimal("500.0");
+    private static final String NOME_EVAPORADOR = "Evaporador";
+    private static final long ID_1 = 1L;
     @Autowired
     private MockMvc mockMvc;
 
@@ -60,7 +69,7 @@ class ProdutoControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         String produtoJSON = objectMapper.writeValueAsString(produto);
 
-        ResultActions resultActions = mockMvc.perform(post("/produtos").contentType(MediaType.APPLICATION_JSON).content(produtoJSON));
+        ResultActions resultActions = mockMvc.perform(post("/produtos").contentType(APPLICATION_JSON).content(produtoJSON));
 
         resultActions.andExpect(status().isCreated())
                 .andExpect(jsonPath("$.nome", equalTo("Evaporador")));
@@ -69,22 +78,22 @@ class ProdutoControllerTest {
     @Test
     void deve_atualizar_um_produto() throws Exception {
         Produto produto = Produto.builder()
-                .id(1L)
-                .nome("Evaporador")
-                .valor(new BigDecimal("500.0"))
-                .codigoProduto(110)
-                .quantidadeItens(2).build();
+                .id(ID_1)
+                .nome(NOME_EVAPORADOR)
+                .valor(VALOR)
+                .codigoProduto(CODIGO_PRODUTO)
+                .quantidadeItens(QUANTIDADE_ITENS).build();
         when(todosProdutos.atualizarProduto(produto.getId(), produto)).thenReturn(produto);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String produtoJSON = objectMapper.writeValueAsString(produto);
 
-        ResultActions resultActions = mockMvc.perform(put("/produtos/{id}", produto.getId()).contentType(MediaType.APPLICATION_JSON).content(produtoJSON));
+        ResultActions resultActions = mockMvc.perform(put("/produtos/{id}", produto.getId()).contentType(APPLICATION_JSON).content(produtoJSON));
 
         resultActions.andExpect(status().isOk())
                 .andExpect(jsonPath("$.nome", equalTo("Evaporador")));
 
-        //aprender a fazer o verify pq ta foda
+        verify(todosProdutos).atualizarProduto(eq(1L), any(Produto.class));
     }
 
     @Test
@@ -100,7 +109,7 @@ class ProdutoControllerTest {
 
         ResultActions resultActions = mockMvc.perform(delete("/produtos/{id}", produto.getId()));
 
-        resultActions.andExpect(status().isOk());
+        resultActions.andExpect(status().isNoContent());
         verify(todosProdutos, times(1)).deletarProduto(produto.getId());
     }
 

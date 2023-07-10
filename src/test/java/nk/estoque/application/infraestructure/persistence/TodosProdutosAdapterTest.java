@@ -1,4 +1,4 @@
-package nk.estoque.infraestructure.persistence;
+package nk.estoque.application.infraestructure.persistence;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest

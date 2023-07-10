@@ -1,5 +1,6 @@
-package NK.estoque.domain.produto;
-;
+package nk.estoque.domain.produto;
+
+import nk.estoque.application.infraestructure.entity.Produto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,9 +1,9 @@
-package NK.estoque.infraestructure.repository;
+package nk.estoque.application.infraestructure.repository;
 
-import NK.estoque.domain.produto.Produto;
+import nk.estoque.application.infraestructure.entity.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository("produtoRepository")
+@Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 }

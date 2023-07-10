@@ -1,42 +1,21 @@
-package NK.estoque.domain.produto;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+package nk.estoque.domain.produto;
 
 import java.math.BigDecimal;
 
-@Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Produto {
-
-    @Id
-    @GeneratedValue
     private Long id;
     private String nome;
-
     private BigDecimal valor;
+    private Integer quantidadeEstoque;
+    private CodigoDeBarras codigoDeBarras;
+    private Marca marca;
+    private Detalhe detalhe;
 
-    private int quantidadeItens;
+    public void adicionaQuantidadeEmEstoque(Integer quantidade) {
+        quantidadeEstoque += quantidade;
+    }
 
-    private int codigoProduto;
-
-    private boolean emEstoque;
-
-    public void geraProduto(ProdutoPayload produtoPayload) {
-        this.id = produtoPayload.getId();
-        this.nome = produtoPayload.getNome();
-        this.valor = produtoPayload.getValor();
-        this.quantidadeItens = produtoPayload.getQuantidadeItens();
-        this.codigoProduto = produtoPayload.getCodigoProduto();
-        this.emEstoque = produtoPayload.isEmEstoque();
+    public boolean temQuantidadeEmEstoque() {
+        return quantidadeEstoque > 0;
     }
 }
