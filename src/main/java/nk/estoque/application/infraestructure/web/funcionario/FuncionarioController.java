@@ -6,15 +6,11 @@ import nk.estoque.domain.funcionario.TodosFuncionarios;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @Controller
 @RequestMapping("/funcionarios")
@@ -35,5 +31,18 @@ public class FuncionarioController {
         Funcionario funcionario = new Funcionario();
         funcionario.geraFuncionario(funcionarioPayload);
         return new ResponseEntity<>(todosFuncionarios.criarFuncionario(funcionario), CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Funcionario> put(@PathVariable Long id, @Valid @RequestBody FuncionarioPayload funcionarioPayload) {
+        Funcionario funcionario = new Funcionario();
+        funcionario.geraFuncionario(funcionarioPayload);
+        return new ResponseEntity<>(todosFuncionarios.atualizarFuncionario(id, funcionario), OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
+        todosFuncionarios.excluirFuncionario(id);
+        return new ResponseEntity<>(NO_CONTENT);
     }
 }

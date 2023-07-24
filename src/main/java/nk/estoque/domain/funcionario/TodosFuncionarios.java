@@ -10,4 +10,8 @@ public interface TodosFuncionarios {
     List<Funcionario> listaPaginada();
 
     Funcionario criarFuncionario(Funcionario funcionario);
+
+    Funcionario atualizarFuncionario(Long id, Funcionario funcionario);
+
+    void excluirFuncionario(Long id);
 }
