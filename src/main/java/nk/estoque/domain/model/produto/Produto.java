@@ -1,4 +1,4 @@
-package nk.estoque.domain.produto;
+package nk.estoque.domain.model.produto;
 
 import java.math.BigDecimal;
 

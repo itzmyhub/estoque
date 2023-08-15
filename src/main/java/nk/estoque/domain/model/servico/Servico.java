@@ -1,6 +1,6 @@
-package nk.estoque.domain.servico;
+package nk.estoque.domain.model.servico;
 
-import nk.estoque.domain.produto.Produto;
+import nk.estoque.domain.model.produto.Produto;
 
 import java.util.List;
 

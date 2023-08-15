@@ -1,7 +1,7 @@
 package nk.estoque.application.infraestructure.persistence;
 
 import nk.estoque.application.infraestructure.entity.Produto;
-import nk.estoque.domain.produto.TodosProdutos;
+import nk.estoque.domain.model.produto.TodosProdutos;
 import nk.estoque.application.infraestructure.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;

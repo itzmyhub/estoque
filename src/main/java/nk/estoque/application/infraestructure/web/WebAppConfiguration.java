@@ -1,7 +1,7 @@
 package nk.estoque.application.infraestructure.web;
 
 import nk.estoque.application.infraestructure.persistence.TodosProdutosAdapter;
-import nk.estoque.domain.produto.TodosProdutos;
+import nk.estoque.domain.model.produto.TodosProdutos;
 import nk.estoque.application.infraestructure.repository.ProdutoRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

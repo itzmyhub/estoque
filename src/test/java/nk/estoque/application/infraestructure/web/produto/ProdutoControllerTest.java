@@ -2,7 +2,7 @@ package nk.estoque.application.infraestructure.web.produto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nk.estoque.application.infraestructure.entity.Produto;
-import nk.estoque.domain.produto.TodosProdutos;
+import nk.estoque.domain.model.produto.TodosProdutos;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

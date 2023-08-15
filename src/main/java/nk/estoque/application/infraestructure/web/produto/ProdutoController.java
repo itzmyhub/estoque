@@ -2,7 +2,7 @@ package nk.estoque.application.infraestructure.web.produto;
 
 import jakarta.validation.Valid;
 import nk.estoque.application.infraestructure.entity.Produto;
-import nk.estoque.domain.produto.TodosProdutos;
+import nk.estoque.domain.model.produto.TodosProdutos;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,6 +27,11 @@ public class ProdutoController {
 
     public ProdutoController(TodosProdutos todosProdutos) {
         this.todosProdutos = todosProdutos;
+    }
+
+    @GetMapping("/admin")
+    public ResponseEntity<List<Produto>> getForAdmin() {
+        return new ResponseEntity<>(todosProdutos.listaPaginada(), OK);
     }
 
     @GetMapping
