@@ -3,11 +3,9 @@ package nk.estoque.application.infraestructure.persistence;
 import nk.estoque.application.infraestructure.entity.Produto;
 import nk.estoque.domain.model.produto.TodosProdutos;
 import nk.estoque.application.infraestructure.repository.ProdutoRepository;
-import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 public class TodosProdutosAdapter implements TodosProdutos {
     private final ProdutoRepository produtoRepository;
 
