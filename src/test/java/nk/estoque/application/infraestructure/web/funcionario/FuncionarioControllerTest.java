@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+@WebMvcTest(FuncionarioController.class)
 class FuncionarioControllerTest {
 
     private static final Long ID_1 = 1L;
@@ -42,11 +42,6 @@ class FuncionarioControllerTest {
 
     @MockBean
     private TodosFuncionarios todosFuncionarios;
-
-
-    //depois ver como resolver esse problema senão os mocks vao crescer infinitamente
-    @MockBean
-    private TodosProdutos todosProdutos;
 
     @Test
     void deve_listar_os_funcionarios() throws Exception{

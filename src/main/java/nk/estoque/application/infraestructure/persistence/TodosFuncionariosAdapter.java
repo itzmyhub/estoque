@@ -6,8 +6,8 @@ import nk.estoque.domain.funcionario.TodosFuncionarios;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-@Service
 public class TodosFuncionariosAdapter implements TodosFuncionarios {
 
     private final FuncionarioRepository funcionarioRepository;
@@ -28,7 +28,12 @@ public class TodosFuncionariosAdapter implements TodosFuncionarios {
 
     @Override
     public Funcionario atualizarFuncionario(Long id, Funcionario funcionario) {
-        throw new RuntimeException("implementa ae filho");
+        Optional<Funcionario> funcionarioEncontrado = funcionarioRepository.findById(id);
+        if (funcionarioEncontrado.isEmpty()) {
+            throw new RuntimeException("implementar melhor dps");
+        }
+        funcionario.setId(id);
+        return funcionarioRepository.save(funcionario);
     }
 
     @Override
