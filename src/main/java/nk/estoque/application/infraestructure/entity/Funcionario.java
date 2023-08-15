@@ -7,16 +7,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nk.estoque.application.infraestructure.web.funcionario.FuncionarioPayload;
 import nk.estoque.application.infraestructure.web.produto.ProdutoPayload;
 
 import java.math.BigDecimal;
+
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Produto {
+public class Funcionario {
 
     @Id
     @GeneratedValue
@@ -24,19 +26,16 @@ public class Produto {
 
     private String nome;
 
-    private BigDecimal valor;
+    private BigDecimal salario;
 
-    private int quantidadeItens;
+    private String cpf;
 
-    private int codigoProduto;
+    private String telefone;
 
-    private boolean emEstoque;
-
-    public void geraProduto(ProdutoPayload produtoPayload) {
-        this.nome = produtoPayload.getNome();
-        this.valor = produtoPayload.getValor();
-        this.quantidadeItens = produtoPayload.getQuantidadeItens();
-        this.codigoProduto = produtoPayload.getCodigoProduto();
-        this.emEstoque = produtoPayload.isEmEstoque();
+    public void geraFuncionario(FuncionarioPayload funcionarioPayload) {
+        this.nome = funcionarioPayload.getNome();
+        this.salario = funcionarioPayload.getSalario();
+        this.cpf = funcionarioPayload.getCpf();
+        this.telefone = funcionarioPayload.getTelefone();
     }
 }
