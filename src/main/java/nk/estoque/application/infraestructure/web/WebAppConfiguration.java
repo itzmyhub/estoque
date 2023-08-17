@@ -4,10 +4,10 @@ import nk.estoque.application.infraestructure.persistence.TodosFuncionariosAdapt
 import nk.estoque.application.infraestructure.persistence.TodosProdutosAdapter;
 import nk.estoque.application.infraestructure.persistence.TodosTrabalhosAdapter;
 import nk.estoque.application.infraestructure.repository.FuncionarioRepository;
+import nk.estoque.application.infraestructure.repository.ProdutoRepository;
 import nk.estoque.application.infraestructure.repository.TrabalhoRepository;
 import nk.estoque.domain.funcionario.TodosFuncionarios;
-import nk.estoque.domain.produto.TodosProdutos;
-import nk.estoque.application.infraestructure.repository.ProdutoRepository;
+import nk.estoque.domain.model.produto.TodosProdutos;
 import nk.estoque.domain.trabalho.TodosTrabalhos;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

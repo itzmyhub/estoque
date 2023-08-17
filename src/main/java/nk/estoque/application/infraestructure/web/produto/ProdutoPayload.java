@@ -18,10 +18,10 @@ public class ProdutoPayload {
 
     @NotNull(message = "A quantidade é obrigatória!")
     @PositiveOrZero(message = "A quantidade de itens deve ser maior ou igual a zero")
-    private int quantidadeItens;
+    private Integer quantidadeItens;
 
     @NotNull(message = "O código do produto é obrigatório!")
-    private int codigoProduto;
+    private Integer codigoProduto;
 
     private boolean emEstoque;
 

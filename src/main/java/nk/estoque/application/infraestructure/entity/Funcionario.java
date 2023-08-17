@@ -3,15 +3,12 @@ package nk.estoque.application.infraestructure.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import nk.estoque.application.infraestructure.web.funcionario.FuncionarioPayload;
-import nk.estoque.application.infraestructure.web.produto.ProdutoPayload;
-
-import java.math.BigDecimal;
-
 
 @Entity
 @Data
