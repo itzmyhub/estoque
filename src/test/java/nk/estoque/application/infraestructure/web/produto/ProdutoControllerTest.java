@@ -4,14 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import nk.estoque.application.infraestructure.entity.Produto;
 import nk.estoque.domain.model.produto.TodosProdutos;
 import org.junit.jupiter.api.Test;
-<<<<<<< HEAD
 import org.springframework.beans.factory.annotation.Autowired;
-=======
-import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
->>>>>>> crud-funcionarios
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -35,31 +28,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-<<<<<<< HEAD
-@WebMvcTest
-=======
 @WebMvcTest(ProdutoController.class)
->>>>>>> crud-funcionarios
 class ProdutoControllerTest {
     private static final int CODIGO_PRODUTO = 110;
     private static final int QUANTIDADE_ITENS = 2;
     private static final BigDecimal VALOR = new BigDecimal("500.0");
     private static final String NOME_EVAPORADOR = "Evaporador";
     private static final long ID_1 = 1L;
-<<<<<<< HEAD
-=======
 
->>>>>>> crud-funcionarios
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private TodosProdutos todosProdutos;
 
-<<<<<<< HEAD
-=======
 
->>>>>>> crud-funcionarios
     @Test
     void deve_listar_produtos() throws Exception {
         Produto produto1 = new Produto();
@@ -109,13 +92,9 @@ class ProdutoControllerTest {
 
         ResultActions resultActions = mockMvc.perform(put("/produtos/{id}", produto.getId()).contentType(APPLICATION_JSON).content(produtoJSON));
 
-<<<<<<< HEAD
         resultActions.andExpect(status().isOk())
                 .andExpect(jsonPath("$.nome", equalTo("Evaporador")));
-=======
-        resultActions.andExpect(status().isOk());
-                //.andExpect(jsonPath("$.nome", equalTo("Evaporador")));
->>>>>>> crud-funcionarios
+
 
         verify(todosProdutos).atualizarProduto(eq(1L), any(Produto.class));
     }
