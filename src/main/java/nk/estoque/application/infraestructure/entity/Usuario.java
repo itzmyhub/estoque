@@ -9,9 +9,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 
 import java.io.Serializable;
 import java.security.Timestamp;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Data
@@ -37,4 +40,8 @@ public class Usuario implements Serializable {
 
     @Column
     private Timestamp createdAt;
+
+    public User toUserDetails() {
+        return new User(email, password, List.of());
+    }
 }
