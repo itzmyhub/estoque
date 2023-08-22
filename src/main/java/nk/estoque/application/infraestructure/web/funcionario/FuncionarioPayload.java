@@ -4,6 +4,8 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import nk.estoque.application.infraestructure.entity.Funcionario;
+
 import java.math.BigDecimal;
 
 @Data
@@ -21,4 +23,13 @@ public class FuncionarioPayload {
 
     @NotBlank(message = "O telefone é obrigatório")
     private String telefone;
+
+    public Funcionario toFuncionario() {
+        Funcionario funcionario = new Funcionario();
+        funcionario.setNome(nome);
+        funcionario.setCpf(cpf);
+        funcionario.setSalario(salario);
+        funcionario.setTelefone(telefone);
+        return funcionario;
+    }
 }

@@ -22,7 +22,4 @@ public class Trabalho {
     private Long id;
     private BigDecimal maoDeObra;
 
-    public void geraTrabalho(TrabalhoPayLoad trabalhoPayLoad) {
-        this.maoDeObra = trabalhoPayLoad.getMaoDeObra();
-    }
 }

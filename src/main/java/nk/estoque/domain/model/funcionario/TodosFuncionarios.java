@@ -1,4 +1,4 @@
-package nk.estoque.domain.funcionario;
+package nk.estoque.domain.model.funcionario;
 
 import nk.estoque.application.infraestructure.entity.Funcionario;
 import org.springframework.stereotype.Service;

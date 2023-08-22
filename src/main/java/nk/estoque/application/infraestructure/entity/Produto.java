@@ -26,17 +26,10 @@ public class Produto {
 
     private BigDecimal valor;
 
-    private int quantidadeItens;
+    private int quantidadeEstoque;
 
     private int codigoProduto;
 
     private boolean emEstoque;
 
-    public void geraProduto(ProdutoPayload produtoPayload) {
-        this.nome = produtoPayload.getNome();
-        this.valor = produtoPayload.getValor();
-        this.quantidadeItens = produtoPayload.getQuantidadeItens();
-        this.codigoProduto = produtoPayload.getCodigoProduto();
-        this.emEstoque = produtoPayload.isEmEstoque();
-    }
 }

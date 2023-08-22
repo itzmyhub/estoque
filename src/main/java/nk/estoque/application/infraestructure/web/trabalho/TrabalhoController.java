@@ -2,7 +2,7 @@ package nk.estoque.application.infraestructure.web.trabalho;
 
 import jakarta.validation.Valid;
 import nk.estoque.application.infraestructure.entity.Trabalho;
-import nk.estoque.domain.trabalho.TodosTrabalhos;
+import nk.estoque.domain.model.trabalho.TodosTrabalhos;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,15 +29,13 @@ public class TrabalhoController {
 
     @PostMapping
     public ResponseEntity<Trabalho> post(@Valid @RequestBody TrabalhoPayLoad trabalhoPayLoad) {
-        Trabalho trabalho = new Trabalho();
-        trabalho.geraTrabalho(trabalhoPayLoad);
+        Trabalho trabalho = trabalhoPayLoad.toTrabalho();
         return new ResponseEntity<>(todosTrabalhos.criarTrabalho(trabalho), CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Trabalho> put(@PathVariable Long id, @Valid @RequestBody TrabalhoPayLoad trabalhoPayLoad) {
-        Trabalho trabalho = new Trabalho();
-        trabalho.geraTrabalho(trabalhoPayLoad);
+        Trabalho trabalho = trabalhoPayLoad.toTrabalho();
         return new ResponseEntity<>(todosTrabalhos.atualizarTrabalho(id, trabalho), OK);
     }
 

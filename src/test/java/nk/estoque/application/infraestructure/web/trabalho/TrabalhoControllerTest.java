@@ -2,7 +2,8 @@ package nk.estoque.application.infraestructure.web.trabalho;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nk.estoque.application.infraestructure.entity.Trabalho;
-import nk.estoque.domain.trabalho.TodosTrabalhos;
+import nk.estoque.application.infraestructure.web.BaseWebControllerTest;
+import nk.estoque.domain.model.trabalho.TodosTrabalhos;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -23,16 +24,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(TrabalhoController.class)
-public class TrabalhoControllerTest {
+public class TrabalhoControllerTest extends BaseWebControllerTest {
 
     private static final BigDecimal MAO_DE_OBRA = new BigDecimal("100.0");
 
     private static final long ID = 1L;
 
     private static final long ID_2 = 2L;
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @MockBean
     private TodosTrabalhos todosTrabalhos;
@@ -51,7 +49,7 @@ public class TrabalhoControllerTest {
 
         when(todosTrabalhos.listaPaginada()).thenReturn(List.of(trabalho, trabalho2));
 
-        ResultActions resultActions = mockMvc.perform(get("/trabalhos"));
+        ResultActions resultActions = mockMvc.perform(get("/trabalhos").header("Authorization", "Bearer " + authorizedToken));
 
         resultActions.andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].id", equalTo(1)));
@@ -69,7 +67,7 @@ public class TrabalhoControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         String trabalhoJSON = objectMapper.writeValueAsString(trabalho);
 
-        ResultActions resultActions = mockMvc.perform(post("/trabalhos").contentType(MediaType.APPLICATION_JSON).content(trabalhoJSON));
+        ResultActions resultActions = mockMvc.perform(post("/trabalhos").header("Authorization", "Bearer " + authorizedToken).contentType(MediaType.APPLICATION_JSON).content(trabalhoJSON));
 
         resultActions.andExpect(status().isCreated());
         verify(todosTrabalhos).criarTrabalho(any(Trabalho.class));
@@ -87,7 +85,7 @@ public class TrabalhoControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         String trabalhoJSON = objectMapper.writeValueAsString(trabalho);
 
-        ResultActions resultActions = mockMvc.perform(put("/trabalhos/{id}", trabalho.getId()).contentType(MediaType.APPLICATION_JSON).content(trabalhoJSON));
+        ResultActions resultActions = mockMvc.perform(put("/trabalhos/{id}", trabalho.getId()).header("Authorization", "Bearer " + authorizedToken).contentType(MediaType.APPLICATION_JSON).content(trabalhoJSON));
 
         resultActions.andExpect(status().isOk());
         verify(todosTrabalhos).atualizarTrabalho(eq(1L), any(Trabalho.class));
@@ -102,7 +100,7 @@ public class TrabalhoControllerTest {
 
         doNothing().when(todosTrabalhos).deletarTrabalho(trabalho.getId());
 
-        ResultActions resultActions = mockMvc.perform(delete("/trabalhos/{id}", trabalho.getId()));
+        ResultActions resultActions = mockMvc.perform(delete("/trabalhos/{id}", trabalho.getId()).header("Authorization", "Bearer " + authorizedToken));
         resultActions.andExpect(status().isNoContent());
         verify(todosTrabalhos, times(1)).deletarTrabalho(trabalho.getId());
     }

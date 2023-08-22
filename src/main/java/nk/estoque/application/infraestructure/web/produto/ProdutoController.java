@@ -41,23 +41,20 @@ public class ProdutoController {
     @PostMapping("/admin")
     public ResponseEntity<Produto> postForAdmin(@Valid @RequestBody ProdutoPayload produtoPayload) {
         // da p mudar os tipos pra ProdutoPayload passar essa instancia pra dentro do adapter. a ver
-        Produto produto = new Produto();
-        produto.geraProduto(produtoPayload);
+        Produto produto = produtoPayload.toProduto();
         return new ResponseEntity<>(todosProdutos.criar(produto), CREATED);
     }
 
     @PostMapping
     public ResponseEntity<Produto> post(@Valid @RequestBody ProdutoPayload produtoPayload) {
         // da p mudar os tipos pra ProdutoPayload passar essa instancia pra dentro do adapter. a ver
-        Produto produto = new Produto();
-        produto.geraProduto(produtoPayload);
+        Produto produto = produtoPayload.toProduto();
         return new ResponseEntity<>(todosProdutos.criar(produto), CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Produto> put(@PathVariable Long id, @RequestBody @Valid ProdutoPayload produtoPayload) {
-        Produto produto = new Produto();
-        produto.geraProduto(produtoPayload);
+    public ResponseEntity<Produto> put(@PathVariable Long id, @Valid @RequestBody ProdutoPayload produtoPayload) {
+        Produto produto = produtoPayload.toProduto();
         return new ResponseEntity<>(todosProdutos.atualizarProduto(id, produto), OK);
     }
 

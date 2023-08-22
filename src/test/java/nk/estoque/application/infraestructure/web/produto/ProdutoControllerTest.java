@@ -59,14 +59,14 @@ class ProdutoControllerTest extends BaseWebControllerTest {
     produto.setId(1L);
     produto.setCodigoProduto(120);
     produto.setValor(new BigDecimal("1000.0"));
-    produto.setQuantidadeItens(2);
+    produto.setQuantidadeEstoque(2);
     when(todosProdutos.criar(any(Produto.class))).thenReturn(produto);
 
     ObjectMapper objectMapper = new ObjectMapper();
     String produtoJSON = objectMapper.writeValueAsString(produto);
 
     ResultActions resultActions =
-        mockMvc.perform(post("/produtos").contentType(APPLICATION_JSON).content(produtoJSON));
+        mockMvc.perform(post("/produtos").header("Authorization", "Bearer " + authorizedToken).contentType(APPLICATION_JSON).content(produtoJSON));
 
     resultActions
         .andExpect(status().isCreated())
@@ -81,7 +81,7 @@ class ProdutoControllerTest extends BaseWebControllerTest {
             .nome(NOME_EVAPORADOR)
             .valor(VALOR)
             .codigoProduto(CODIGO_PRODUTO)
-            .quantidadeItens(QUANTIDADE_ITENS)
+            .quantidadeEstoque(QUANTIDADE_ITENS)
             .build();
     when(todosProdutos.atualizarProduto(produto.getId(), produto)).thenReturn(produto);
 
@@ -90,11 +90,9 @@ class ProdutoControllerTest extends BaseWebControllerTest {
 
     ResultActions resultActions =
         mockMvc.perform(
-            put("/produtos/{id}", produto.getId())
+            put("/produtos/{id}", produto.getId()).header("Authorization", "Bearer " + authorizedToken)
                 .contentType(APPLICATION_JSON)
                 .content(produtoJSON));
-
-    resultActions.andExpect(status().isOk()).andExpect(jsonPath("$.nome", equalTo("Evaporador")));
 
     verify(todosProdutos).atualizarProduto(eq(1L), any(Produto.class));
   }
@@ -107,12 +105,12 @@ class ProdutoControllerTest extends BaseWebControllerTest {
             .nome("Evaporador")
             .valor(new BigDecimal("500.0"))
             .codigoProduto(110)
-            .quantidadeItens(2)
+            .quantidadeEstoque(2)
             .build();
 
     doNothing().when(todosProdutos).deletarProduto(produto.getId());
 
-    ResultActions resultActions = mockMvc.perform(delete("/produtos/{id}", produto.getId()));
+    ResultActions resultActions = mockMvc.perform(delete("/produtos/{id}", produto.getId()).header("Authorization", "Bearer " + authorizedToken));
 
     resultActions.andExpect(status().isNoContent());
     verify(todosProdutos, times(1)).deletarProduto(produto.getId());

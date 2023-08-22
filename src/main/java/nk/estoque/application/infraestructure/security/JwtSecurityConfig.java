@@ -63,6 +63,7 @@ public class JwtSecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(authorize -> authorize.requestMatchers("/authenticate").permitAll())
         .authorizeHttpRequests(authorize -> authorize.requestMatchers("/usuarios").permitAll())
+        .authorizeHttpRequests(authorize -> authorize.requestMatchers("/clientes").permitAll())
         .authorizeHttpRequests(requests -> requests.anyRequest().authenticated())
         .exceptionHandling(
             exceptionHandling ->

@@ -1,4 +1,4 @@
-package nk.estoque.domain.trabalho;
+package nk.estoque.domain.model.trabalho;
 
 import nk.estoque.application.infraestructure.entity.Trabalho;
 import org.springframework.stereotype.Service;

@@ -16,6 +16,7 @@ public class UsuarioPayLoad {
     @NotNull(message = "A senha é obrigatória!")
     private String senha;
 
+
     public Usuario toUsuario() {
         Usuario usuario = new Usuario();
         usuario.setName(nome);

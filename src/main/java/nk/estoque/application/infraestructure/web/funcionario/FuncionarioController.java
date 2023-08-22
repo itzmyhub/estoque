@@ -2,8 +2,7 @@ package nk.estoque.application.infraestructure.web.funcionario;
 
 import jakarta.validation.Valid;
 import nk.estoque.application.infraestructure.entity.Funcionario;
-import nk.estoque.domain.funcionario.TodosFuncionarios;
-import org.springframework.beans.factory.annotation.Autowired;
+import nk.estoque.domain.model.funcionario.TodosFuncionarios;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,15 +29,13 @@ public class FuncionarioController {
 
     @PostMapping
     public ResponseEntity<Funcionario> post(@Valid @RequestBody FuncionarioPayload funcionarioPayload) {
-        Funcionario funcionario = new Funcionario();
-        funcionario.geraFuncionario(funcionarioPayload);
+        Funcionario funcionario = funcionarioPayload.toFuncionario();
         return new ResponseEntity<>(todosFuncionarios.criarFuncionario(funcionario), CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Funcionario> put(@PathVariable Long id, @Valid @RequestBody FuncionarioPayload funcionarioPayload) {
-        Funcionario funcionario = new Funcionario();
-        funcionario.geraFuncionario(funcionarioPayload);
+        Funcionario funcionario = funcionarioPayload.toFuncionario();
         return new ResponseEntity<>(todosFuncionarios.atualizarFuncionario(id, funcionario), OK);
     }
 

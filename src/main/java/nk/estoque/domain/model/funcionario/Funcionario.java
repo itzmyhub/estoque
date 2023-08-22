@@ -1,4 +1,4 @@
-package nk.estoque.domain.funcionario;
+package nk.estoque.domain.model.funcionario;
 
 import lombok.Data;
 

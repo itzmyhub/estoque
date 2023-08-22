@@ -1,9 +1,8 @@
 package nk.estoque.application.infraestructure.persistence;
 
-import nk.estoque.application.infraestructure.entity.Produto;
 import nk.estoque.application.infraestructure.entity.Trabalho;
 import nk.estoque.application.infraestructure.repository.TrabalhoRepository;
-import nk.estoque.domain.trabalho.TodosTrabalhos;
+import nk.estoque.domain.model.trabalho.TodosTrabalhos;
 
 import java.util.List;
 import java.util.Optional;

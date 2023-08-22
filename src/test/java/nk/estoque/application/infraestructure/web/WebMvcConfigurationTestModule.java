@@ -2,8 +2,9 @@ package nk.estoque.application.infraestructure.web;
 
 import nk.estoque.application.infraestructure.security.JwtTokenUtil;
 import nk.estoque.application.infraestructure.service.UsuarioService;
-import nk.estoque.domain.funcionario.TodosFuncionarios;
-import nk.estoque.domain.trabalho.TodosTrabalhos;
+import nk.estoque.domain.model.cliente.TodosClientes;
+import nk.estoque.domain.model.funcionario.TodosFuncionarios;
+import nk.estoque.domain.model.trabalho.TodosTrabalhos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +36,9 @@ public class WebMvcConfigurationTestModule {
     public UsuarioService usuarioService() {
         return mock(UsuarioService.class);
     }
+
+    @Bean
+    public TodosClientes todosClientes() { return mock(TodosClientes.class); }
 
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {

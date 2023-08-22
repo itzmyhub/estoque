@@ -2,8 +2,7 @@ package nk.estoque.application.infraestructure.persistence;
 
 import nk.estoque.application.infraestructure.entity.Funcionario;
 import nk.estoque.application.infraestructure.repository.FuncionarioRepository;
-import nk.estoque.domain.funcionario.TodosFuncionarios;
-import org.springframework.stereotype.Service;
+import nk.estoque.domain.model.funcionario.TodosFuncionarios;
 
 import java.util.List;
 import java.util.Optional;
