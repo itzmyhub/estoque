@@ -7,22 +7,22 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nk.estoque.application.infraestructure.web.trabalho.TrabalhoPayLoad;
-
-import java.math.BigDecimal;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Trabalho {
+public class Cliente {
     @Id
     @GeneratedValue
     private Long id;
-    private BigDecimal maoDeObra;
 
-    public void geraTrabalho(TrabalhoPayLoad trabalhoPayLoad) {
-        this.maoDeObra = trabalhoPayLoad.getMaoDeObra();
-    }
+    private String nome;
+
+    private String telefone;
+
+    private String email;
+
+    private String cpf;
 }

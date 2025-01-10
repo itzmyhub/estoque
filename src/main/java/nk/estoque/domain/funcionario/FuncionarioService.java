@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface TodosFuncionarios {
+public interface FuncionarioService {
     List<Funcionario> listaPaginada();
 
     Funcionario criarFuncionario(Funcionario funcionario);

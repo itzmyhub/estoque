@@ -1,6 +1,7 @@
 package nk.estoque.application.infraestructure.web.produto;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import nk.estoque.application.infraestructure.entity.Produto;
 
 import java.math.BigDecimal;
 
@@ -25,4 +26,13 @@ public class ProdutoPayload {
 
     private boolean emEstoque;
 
+    public Produto toProduto() {
+        Produto produto = new Produto();
+        produto.setNome(nome);
+        produto.setValor(valor);
+        produto.setQuantidadeItens(quantidadeItens);
+        produto.setCodigoProduto(codigoProduto);
+        produto.emEstoque();
+        return produto;
+    }
 }

@@ -1,4 +1,4 @@
-package nk.estoque.domain.model.produto;
+package nk.estoque.domain.produto.models;
 
 public class Detalhe {
     private String descricao;

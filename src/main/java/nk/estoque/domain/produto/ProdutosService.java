@@ -1,4 +1,4 @@
-package nk.estoque.domain.model.produto;
+package nk.estoque.domain.produto;
 
 import nk.estoque.application.infraestructure.entity.Produto;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface TodosProdutos {
+public interface ProdutosService {
     List<Produto> listaPaginada();
 
     Produto criar(Produto produto);

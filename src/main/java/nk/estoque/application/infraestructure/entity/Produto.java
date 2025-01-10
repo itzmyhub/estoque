@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nk.estoque.application.infraestructure.web.produto.ProdutoPayload;
 
 import java.math.BigDecimal;
 
@@ -32,11 +31,11 @@ public class Produto {
 
     private boolean emEstoque;
 
-    public void geraProduto(ProdutoPayload produtoPayload) {
-        this.nome = produtoPayload.getNome();
-        this.valor = produtoPayload.getValor();
-        this.quantidadeItens = produtoPayload.getQuantidadeItens();
-        this.codigoProduto = produtoPayload.getCodigoProduto();
-        this.emEstoque = produtoPayload.isEmEstoque();
+    public void emEstoque() {
+        this.emEstoque = produtoNoEstoque(this);
+    }
+
+    protected boolean produtoNoEstoque(Produto produto) {
+        return produto.quantidadeItens > 0;
     }
 }

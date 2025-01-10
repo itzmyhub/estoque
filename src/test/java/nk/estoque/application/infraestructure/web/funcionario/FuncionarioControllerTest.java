@@ -2,7 +2,7 @@ package nk.estoque.application.infraestructure.web.funcionario;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nk.estoque.application.infraestructure.entity.Funcionario;
-import nk.estoque.domain.funcionario.TodosFuncionarios;
+import nk.estoque.domain.funcionario.FuncionarioService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -46,7 +46,7 @@ class FuncionarioControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private TodosFuncionarios todosFuncionarios;
+    private FuncionarioService todosFuncionarios;
 
     @Test
     void deve_listar_os_funcionarios() throws Exception{

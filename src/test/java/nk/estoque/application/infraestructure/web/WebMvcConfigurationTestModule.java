@@ -2,8 +2,8 @@ package nk.estoque.application.infraestructure.web;
 
 import nk.estoque.application.infraestructure.security.JwtTokenUtil;
 import nk.estoque.application.infraestructure.service.UsuarioService;
-import nk.estoque.domain.funcionario.TodosFuncionarios;
-import nk.estoque.domain.trabalho.TodosTrabalhos;
+import nk.estoque.domain.funcionario.FuncionarioService;
+import nk.estoque.domain.pedido.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,13 +22,13 @@ public class WebMvcConfigurationTestModule {
     }
 
     @Bean
-    public TodosFuncionarios todosFuncionarios() {
-        return mock(TodosFuncionarios.class);
+    public FuncionarioService todosFuncionarios() {
+        return mock(FuncionarioService.class);
     }
 
     @Bean
-    public TodosTrabalhos todosTrabalhos() {
-        return mock(TodosTrabalhos.class);
+    public PedidoService todosTrabalhos() {
+        return mock(PedidoService.class);
     }
 
     @Bean

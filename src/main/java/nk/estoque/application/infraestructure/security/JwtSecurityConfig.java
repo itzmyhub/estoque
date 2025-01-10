@@ -64,7 +64,7 @@ public class JwtSecurityConfig {
         .authorizeHttpRequests(authorize -> authorize.requestMatchers("/authenticate").permitAll())
         .authorizeHttpRequests(authorize -> authorize.requestMatchers("/usuarios").permitAll())
         .authorizeHttpRequests(authorize -> authorize.requestMatchers("/produtos").permitAll())
-        .authorizeHttpRequests(requests -> requests.anyRequest().authenticated())
+        .authorizeHttpRequests(requests -> requests.anyRequest().permitAll())
         .exceptionHandling(
             exceptionHandling ->
                 exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint))

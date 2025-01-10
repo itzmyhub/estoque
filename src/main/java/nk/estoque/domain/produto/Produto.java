@@ -1,7 +1,13 @@
-package nk.estoque.domain.model.produto;
+package nk.estoque.domain.produto;
+
+import lombok.Data;
+import nk.estoque.domain.produto.models.CodigoDeBarras;
+import nk.estoque.domain.produto.models.Detalhe;
+import nk.estoque.domain.produto.models.Marca;
 
 import java.math.BigDecimal;
 
+@Data
 public class Produto {
     private Long id;
     private String nome;

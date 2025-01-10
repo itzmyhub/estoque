@@ -2,17 +2,16 @@ package nk.estoque.application.infraestructure.persistence;
 
 import nk.estoque.application.infraestructure.entity.Funcionario;
 import nk.estoque.application.infraestructure.repository.FuncionarioRepository;
-import nk.estoque.domain.funcionario.TodosFuncionarios;
-import org.springframework.stereotype.Service;
+import nk.estoque.domain.funcionario.FuncionarioService;
 
 import java.util.List;
 import java.util.Optional;
 
-public class TodosFuncionariosAdapter implements TodosFuncionarios {
+public class FuncionarioServiceImpl implements FuncionarioService {
 
     private final FuncionarioRepository funcionarioRepository;
 
-    public TodosFuncionariosAdapter(FuncionarioRepository funcionarioRepository) {
+    public FuncionarioServiceImpl(FuncionarioRepository funcionarioRepository) {
         this.funcionarioRepository = funcionarioRepository;
     }
 

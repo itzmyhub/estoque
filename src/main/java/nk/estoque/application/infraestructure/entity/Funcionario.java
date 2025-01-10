@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nk.estoque.application.infraestructure.web.funcionario.FuncionarioPayload;
 
 @Entity
 @Data
@@ -29,10 +28,4 @@ public class Funcionario {
 
     private String telefone;
 
-    public void geraFuncionario(FuncionarioPayload funcionarioPayload) {
-        this.nome = funcionarioPayload.getNome();
-        this.salario = funcionarioPayload.getSalario();
-        this.cpf = funcionarioPayload.getCpf();
-        this.telefone = funcionarioPayload.getTelefone();
-    }
 }

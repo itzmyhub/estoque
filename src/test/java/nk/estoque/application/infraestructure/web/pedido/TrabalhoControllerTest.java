@@ -1,8 +1,8 @@
-package nk.estoque.application.infraestructure.web.trabalho;
+package nk.estoque.application.infraestructure.web.pedido;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nk.estoque.application.infraestructure.entity.Trabalho;
-import nk.estoque.domain.trabalho.TodosTrabalhos;
+import nk.estoque.application.infraestructure.entity.Pedido;
+import nk.estoque.domain.pedido.PedidoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(TrabalhoController.class)
+@WebMvcTest(PedidoController.class)
 public class TrabalhoControllerTest {
 
     private static final BigDecimal MAO_DE_OBRA = new BigDecimal("100.0");
@@ -35,18 +35,18 @@ public class TrabalhoControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private TodosTrabalhos todosTrabalhos;
+    private PedidoService todosTrabalhos;
 
     @Test
     void deve_listar_trabalhos() throws Exception {
-        Trabalho trabalho = Trabalho.builder()
+        Pedido trabalho = Pedido.builder()
                 .id(ID)
-                .maoDeObra(MAO_DE_OBRA)
+                .valorAdicional(MAO_DE_OBRA)
                 .build();
 
-        Trabalho trabalho2 = Trabalho.builder()
+        Pedido trabalho2 = Pedido.builder()
                 .id(ID_2)
-                .maoDeObra(MAO_DE_OBRA)
+                .valorAdicional(MAO_DE_OBRA)
                 .build();
 
         when(todosTrabalhos.listaPaginada()).thenReturn(List.of(trabalho, trabalho2));
@@ -59,12 +59,12 @@ public class TrabalhoControllerTest {
 
     @Test
     void deve_criar_um_novo_trabalho() throws Exception {
-        Trabalho trabalho = Trabalho.builder()
+        Pedido trabalho = Pedido.builder()
                 .id(ID)
-                .maoDeObra(MAO_DE_OBRA)
+                .valorAdicional(MAO_DE_OBRA)
                 .build();
 
-        when(todosTrabalhos.criarTrabalho(trabalho)).thenReturn(trabalho);
+        when(todosTrabalhos.criarPedido(trabalho)).thenReturn(trabalho);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String trabalhoJSON = objectMapper.writeValueAsString(trabalho);
@@ -72,17 +72,17 @@ public class TrabalhoControllerTest {
         ResultActions resultActions = mockMvc.perform(post("/trabalhos").contentType(MediaType.APPLICATION_JSON).content(trabalhoJSON));
 
         resultActions.andExpect(status().isCreated());
-        verify(todosTrabalhos).criarTrabalho(any(Trabalho.class));
+        verify(todosTrabalhos).criarPedido(any(Pedido.class));
     }
 
     @Test
     void deve_atualizar_um_trabalho() throws Exception {
-        Trabalho trabalho = Trabalho.builder()
+        Pedido trabalho = Pedido.builder()
                 .id(ID)
-                .maoDeObra(MAO_DE_OBRA)
+                .valorAdicional(MAO_DE_OBRA)
                 .build();
 
-        when(todosTrabalhos.atualizarTrabalho(trabalho.getId(), trabalho)).thenReturn(trabalho);
+        when(todosTrabalhos.atualizarPedido(trabalho.getId(), trabalho)).thenReturn(trabalho);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String trabalhoJSON = objectMapper.writeValueAsString(trabalho);
@@ -90,20 +90,20 @@ public class TrabalhoControllerTest {
         ResultActions resultActions = mockMvc.perform(put("/trabalhos/{id}", trabalho.getId()).contentType(MediaType.APPLICATION_JSON).content(trabalhoJSON));
 
         resultActions.andExpect(status().isOk());
-        verify(todosTrabalhos).atualizarTrabalho(eq(1L), any(Trabalho.class));
+        verify(todosTrabalhos).atualizarPedido(eq(1L), any(Pedido.class));
     }
 
     @Test
     void deve_excluir_um_trabalho() throws Exception {
-        Trabalho trabalho = Trabalho.builder()
+        Pedido trabalho = Pedido.builder()
                 .id(ID)
-                .maoDeObra(MAO_DE_OBRA)
+                .valorAdicional(MAO_DE_OBRA)
                 .build();
 
-        doNothing().when(todosTrabalhos).deletarTrabalho(trabalho.getId());
+        doNothing().when(todosTrabalhos).deletarPedido(trabalho.getId());
 
         ResultActions resultActions = mockMvc.perform(delete("/trabalhos/{id}", trabalho.getId()));
         resultActions.andExpect(status().isNoContent());
-        verify(todosTrabalhos, times(1)).deletarTrabalho(trabalho.getId());
+        verify(todosTrabalhos, times(1)).deletarPedido(trabalho.getId());
     }
 }

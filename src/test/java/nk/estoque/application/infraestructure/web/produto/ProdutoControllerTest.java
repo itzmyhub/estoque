@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import nk.estoque.application.infraestructure.entity.Produto;
 import nk.estoque.application.infraestructure.web.BaseWebControllerTest;
-import nk.estoque.domain.model.produto.TodosProdutos;
+import nk.estoque.domain.produto.ProdutosService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.ResultActions;
@@ -33,7 +33,7 @@ class ProdutoControllerTest extends BaseWebControllerTest {
   private static final String NOME_EVAPORADOR = "Evaporador";
   private static final long ID_1 = 1L;
 
-  @MockBean private TodosProdutos todosProdutos;
+  @MockBean private ProdutosService todosProdutos;
 
   @Test
   void deve_listar_produtos() throws Exception {
