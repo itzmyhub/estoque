@@ -6,7 +6,8 @@ import static org.springframework.http.HttpStatus.OK;
 
 import jakarta.validation.Valid;
 import java.util.List;
-import nk.estoque.application.infraestructure.entity.Produto;
+import nk.estoque.application.infraestructure.entity.ProdutoEntity;
+import nk.estoque.domain.produto.Produto;
 import nk.estoque.domain.produto.ProdutosService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,29 +23,29 @@ public class ProdutoController {
     }
 
     @GetMapping("/admin")
-    public ResponseEntity<List<Produto>> getForAdmin() {
+    public ResponseEntity<List<ProdutoEntity>> getForAdmin() {
         return new ResponseEntity<>(produtoService.listaPaginada(), OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<Produto>> get() {
+    public ResponseEntity<List<ProdutoEntity>> get() {
         return new ResponseEntity<>(produtoService.listaPaginada(), OK);
     }
 
     @PostMapping("/admin")
-    public ResponseEntity<Produto> postForAdmin(@Valid @RequestBody ProdutoPayload produtoPayload) {
+    public ResponseEntity<ProdutoEntity> postForAdmin(@Valid @RequestBody ProdutoPayload produtoPayload) {
         Produto produto = produtoPayload.toProduto();
         return new ResponseEntity<>(produtoService.criar(produto), CREATED);
     }
 
     @PostMapping
-    public ResponseEntity<Produto> post(@Valid @RequestBody ProdutoPayload produtoPayload) {
+    public ResponseEntity<ProdutoEntity> post(@Valid @RequestBody ProdutoPayload produtoPayload) {
         Produto produto = produtoPayload.toProduto();
         return new ResponseEntity<>(produtoService.criar(produto), CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Produto> put(@PathVariable Long id, @RequestBody @Valid ProdutoPayload produtoPayload) {
+    public ResponseEntity<ProdutoEntity> put(@PathVariable Long id, @RequestBody @Valid ProdutoPayload produtoPayload) {
         Produto produto = produtoPayload.toProduto();
         return new ResponseEntity<>(produtoService.atualizarProduto(id, produto), OK);
     }

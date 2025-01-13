@@ -1,7 +1,8 @@
 package nk.estoque.application.infraestructure.web.pedido;
 
 import jakarta.validation.Valid;
-import nk.estoque.application.infraestructure.entity.Pedido;
+import nk.estoque.application.infraestructure.entity.PedidoEntity;
+import nk.estoque.domain.pedido.Pedido;
 import nk.estoque.domain.pedido.PedidoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,18 +24,18 @@ public class PedidoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Pedido>> get() {
+    public ResponseEntity<List<PedidoEntity>> get() {
         return new ResponseEntity<>(pedidoService.listaPaginada(), OK);
     }
 
     @PostMapping
-    public ResponseEntity<Pedido> post(@Valid @RequestBody PedidoPayload pedidoPayload) {
+    public ResponseEntity<PedidoEntity> post(@Valid @RequestBody PedidoPayload pedidoPayload) {
         Pedido pedido = pedidoPayload.toPedido();
         return new ResponseEntity<>(pedidoService.criarPedido(pedido), CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Pedido> put(@PathVariable Long id, @Valid @RequestBody PedidoPayload pedidoPayload) {
+    public ResponseEntity<PedidoEntity> put(@PathVariable Long id, @Valid @RequestBody PedidoPayload pedidoPayload) {
         Pedido pedido = pedidoPayload.toPedido();
         return new ResponseEntity<>(pedidoService.atualizarPedido(id, pedido), OK);
     }

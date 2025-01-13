@@ -16,6 +16,8 @@ public class Produto {
     private CodigoDeBarras codigoDeBarras;
     private Marca marca;
     private Detalhe detalhe;
+    private boolean emEstoque;
+
 
     public void adicionaQuantidadeEmEstoque(Integer quantidade) {
         quantidadeEstoque += quantidade;

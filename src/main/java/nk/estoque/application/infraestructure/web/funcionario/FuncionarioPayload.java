@@ -4,7 +4,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import nk.estoque.application.infraestructure.entity.Funcionario;
+import nk.estoque.domain.funcionario.Funcionario;
 
 import java.math.BigDecimal;
 

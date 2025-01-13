@@ -1,18 +1,21 @@
 package nk.estoque.domain.pedido;
 
-import nk.estoque.domain.servico.Servico;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Data
 public class Pedido {
     private Long id;
     private BigDecimal valorAdicional;
-    private String funcionario;
-    private String cliente;
+    private List<Long> produtos;
+    private Long funcionario;
+    private Long cliente;
     private LocalDateTime dataHora;
-    private List<Servico> servicos;
+    private List<Long> servicos;
+    private BigDecimal valorFinal;
 
     // TODO implementar lógica aqui
 }

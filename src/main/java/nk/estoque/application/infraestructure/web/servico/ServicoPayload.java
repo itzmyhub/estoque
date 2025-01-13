@@ -1,8 +1,7 @@
 package nk.estoque.application.infraestructure.web.servico;
 
 import lombok.Data;
-import nk.estoque.application.infraestructure.entity.Produto;
-import nk.estoque.application.infraestructure.entity.Servico;
+import nk.estoque.domain.servico.Servico;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.List;
 @Data
 public class ServicoPayload {
 
-    private List<Produto> produtos;
+    private List<Long> produtos;
 
     private BigDecimal maoDeObra;
 

@@ -2,7 +2,7 @@ package nk.estoque.application.infraestructure.web;
 
 import static org.mockito.Mockito.doReturn;
 
-import nk.estoque.application.infraestructure.entity.Usuario;
+import nk.estoque.application.infraestructure.entity.UsuarioEntity;
 import nk.estoque.application.infraestructure.security.JwtRequestFilter;
 import nk.estoque.application.infraestructure.security.JwtTokenUtil;
 import nk.estoque.application.infraestructure.service.JwtUserDetailsService;
@@ -39,7 +39,7 @@ public class BaseWebControllerTest {
     return umUsuario().toUserDetails();
   }
 
-  private Usuario umUsuario() {
-    return Usuario.builder().email("teste@email").password("secret").build();
+  private UsuarioEntity umUsuario() {
+    return UsuarioEntity.builder().email("teste@email").password("secret").build();
   }
 }

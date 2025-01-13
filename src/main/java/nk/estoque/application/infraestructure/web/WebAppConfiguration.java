@@ -1,13 +1,8 @@
 package nk.estoque.application.infraestructure.web;
 
-import nk.estoque.application.infraestructure.persistence.FuncionarioServiceImpl;
-import nk.estoque.application.infraestructure.persistence.ProdutosServiceImpl;
-import nk.estoque.application.infraestructure.persistence.PedidoServiceImpl;
-import nk.estoque.application.infraestructure.persistence.ServicoServiceImpl;
-import nk.estoque.application.infraestructure.repository.FuncionarioRepository;
-import nk.estoque.application.infraestructure.repository.ProdutoRepository;
-import nk.estoque.application.infraestructure.repository.PedidoRepository;
-import nk.estoque.application.infraestructure.repository.ServicoRepository;
+import nk.estoque.application.infraestructure.persistence.*;
+import nk.estoque.application.infraestructure.repository.*;
+import nk.estoque.domain.cliente.ClienteService;
 import nk.estoque.domain.funcionario.FuncionarioService;
 import nk.estoque.domain.produto.ProdutosService;
 import nk.estoque.domain.pedido.PedidoService;
@@ -26,11 +21,14 @@ public class WebAppConfiguration {
 
     private final ServicoRepository servicoRepository;
 
-    public WebAppConfiguration(ProdutoRepository produtoRepository, FuncionarioRepository funcionarioRepository, PedidoRepository trabalhoRepository, ServicoRepository servicoRepository) {
+    private final ClienteRepository clienteRepository;
+
+    public WebAppConfiguration(ProdutoRepository produtoRepository, FuncionarioRepository funcionarioRepository, PedidoRepository trabalhoRepository, ServicoRepository servicoRepository, ClienteRepository clienteRepository) {
         this.produtoRepository = produtoRepository;
         this.funcionarioRepository = funcionarioRepository;
         this.trabalhoRepository = trabalhoRepository;
         this.servicoRepository = servicoRepository;
+        this.clienteRepository = clienteRepository;
     }
 
     @Bean
@@ -43,10 +41,15 @@ public class WebAppConfiguration {
     }
 
     @Bean
-    public PedidoService pedidoService() { return new PedidoServiceImpl(trabalhoRepository);
+    public PedidoService pedidoService() { return new PedidoServiceImpl(trabalhoRepository, servicoService(), produtosService(), clienteService(), funcionarioService());
     }
 
     @Bean
-    public ServicoService servicoService() { return new ServicoServiceImpl(servicoRepository);
+    public ServicoService servicoService() { return new ServicoServiceImpl(servicoRepository, produtosService());
+    }
+
+    @Bean
+    public ClienteService clienteService() {
+        return new ClienteServiceImpl(clienteRepository);
     }
 }

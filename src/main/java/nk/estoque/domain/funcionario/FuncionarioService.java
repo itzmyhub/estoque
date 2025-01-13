@@ -1,17 +1,17 @@
 package nk.estoque.domain.funcionario;
 
-import nk.estoque.application.infraestructure.entity.Funcionario;
-import org.springframework.stereotype.Service;
+import nk.estoque.application.infraestructure.entity.FuncionarioEntity;
 
 import java.util.List;
 
-@Service
 public interface FuncionarioService {
-    List<Funcionario> listaPaginada();
+    List<FuncionarioEntity> listaPaginada();
 
-    Funcionario criarFuncionario(Funcionario funcionario);
+    FuncionarioEntity funcionarioPorId(Long id);
 
-    Funcionario atualizarFuncionario(Long id, Funcionario funcionario);
+    FuncionarioEntity criarFuncionario(Funcionario funcionario);
+
+    FuncionarioEntity atualizarFuncionario(Long id, Funcionario funcionario);
 
     void excluirFuncionario(Long id);
 }

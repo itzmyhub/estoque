@@ -1,18 +1,16 @@
 package nk.estoque.domain.pedido;
 
-import nk.estoque.application.infraestructure.entity.Pedido;
-import org.springframework.stereotype.Service;
+import nk.estoque.application.infraestructure.entity.PedidoEntity;
 
 import java.util.List;
 
-@Service
 public interface PedidoService {
 
-    List<Pedido> listaPaginada();
+    List<PedidoEntity> listaPaginada();
 
-    Pedido criarPedido(Pedido pedido);
+    PedidoEntity criarPedido(Pedido pedido);
 
-    Pedido atualizarPedido(Long id, Pedido pedido);
+    PedidoEntity atualizarPedido(Long id, Pedido pedido);
 
     void deletarPedido(Long id);
 }

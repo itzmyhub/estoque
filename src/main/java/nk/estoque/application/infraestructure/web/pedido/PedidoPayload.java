@@ -7,8 +7,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import nk.estoque.application.infraestructure.entity.*;
+import nk.estoque.domain.pedido.Pedido;
 
 @Data
 public class PedidoPayload {
@@ -17,15 +16,13 @@ public class PedidoPayload {
     @DecimalMin(value = "0.00", message = "O valor deve ser maior ou igual a zero!")
     private BigDecimal valorAdicional;
 
-    private List<Produto> produtos;
+    private List<Long> produtos;
 
-    private List<Servico> servicos;
+    private List<Long> servicos;
 
-    @NotNull
-    private Funcionario funcionario;
+    private Long funcionario;
 
-    @NotNull
-    private Cliente cliente;
+    private Long cliente;
 
     @NotNull
     private LocalDateTime dataHora;

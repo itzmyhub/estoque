@@ -1,38 +1,62 @@
 package nk.estoque.application.infraestructure.persistence;
 
-import nk.estoque.application.infraestructure.entity.Servico;
+import nk.estoque.application.infraestructure.entity.ServicoEntity;
 import nk.estoque.application.infraestructure.exceptions.IdNaoEncontradoException;
 import nk.estoque.application.infraestructure.repository.ServicoRepository;
+import nk.estoque.domain.produto.ProdutosService;
+import nk.estoque.domain.servico.Servico;
 import nk.estoque.domain.servico.ServicoService;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ServicoServiceImpl implements ServicoService {
 
     private final ServicoRepository servicoRepository;
 
-    public ServicoServiceImpl(ServicoRepository servicoRepository) {
+    private final ProdutosService produtosService;
+
+    public ServicoServiceImpl(ServicoRepository servicoRepository, ProdutosService produtosService) {
         this.servicoRepository = servicoRepository;
+        this.produtosService = produtosService;
     }
 
     @Override
-    public List<Servico> listaPaginada() {
+    public List<ServicoEntity> listaPaginada() {
         return servicoRepository.findAll();
     }
 
     @Override
-    public Servico criar(Servico servico) {
-        return servicoRepository.save(servico);
+    public List<ServicoEntity> servicosPorId(List<Long> ids) {
+        List<ServicoEntity> servicos = servicoRepository.findAllById(ids);
+
+        if (servicos.size() != ids.size()) {
+            List<Long> idsNaoEncontrados = new ArrayList<>(ids);
+            servicos.forEach(servico -> idsNaoEncontrados.remove(servico.getId()));
+
+            throw new IdNaoEncontradoException("Serviços com os IDs não encontrados: " + idsNaoEncontrados);
+        }
+
+        return servicos;
     }
 
     @Override
-    public Servico atualizarServico(Long id, Servico novoServico) {
-        Servico servicoEncontrado = servicoRepository.findById(id)
-                .orElseThrow(() -> new IdNaoEncontradoException("Produto com ID " + id + " não encontrado"));
+    public ServicoEntity criar(Servico servico) {
+        ServicoEntity servicoEntity = ServicoEntity.fromServico(servico);
+        servicoEntity.setProdutos(produtosService.produtosPorId(servico.getProdutos()));
+        return servicoRepository.save(servicoEntity);
+    }
 
-        servicoEncontrado.setMaoDeObra(novoServico.getMaoDeObra());
+    @Override
+    public ServicoEntity atualizarServico(Long id, Servico servico) {
+        ServicoEntity servicoEntity = servicoRepository.findById(id)
+                .orElseThrow(() -> new IdNaoEncontradoException("Serviço com ID " + id + " não encontrado"));
 
-        return servicoRepository.save(servicoEncontrado);
+        //TODO IMPLEMENTAR A ATUALIZAÇÃO DO SERVIÇO
+
+        return servicoRepository.save(servicoEntity);
     }
 
     @Override

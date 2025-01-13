@@ -1,15 +1,17 @@
 package nk.estoque.domain.servico;
 
 import java.util.List;
-import nk.estoque.application.infraestructure.entity.Servico;
+import nk.estoque.application.infraestructure.entity.ServicoEntity;
 
 public interface ServicoService {
 
-    List<Servico> listaPaginada();
+    List<ServicoEntity> listaPaginada();
 
-    Servico criar(Servico servico);
+    List<ServicoEntity> servicosPorId(List<Long> ids);
 
-    Servico atualizarServico(Long id, Servico novoServico);
+    ServicoEntity criar(Servico servico);
+
+    ServicoEntity atualizarServico(Long id, Servico novoServico);
 
     void deletarServico(Long id);
 }

@@ -2,7 +2,7 @@ package nk.estoque.application.infraestructure.web.usuario;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import nk.estoque.application.infraestructure.entity.Usuario;
+import nk.estoque.application.infraestructure.entity.UsuarioEntity;
 
 @Data
 public class UsuarioPayLoad {
@@ -16,8 +16,8 @@ public class UsuarioPayLoad {
     @NotNull(message = "A senha é obrigatória!")
     private String senha;
 
-    public Usuario toUsuario() {
-        Usuario usuario = new Usuario();
+    public UsuarioEntity toUsuario() {
+        UsuarioEntity usuario = new UsuarioEntity();
         usuario.setName(nome);
         usuario.setEmail(email);
         usuario.setPassword(senha);

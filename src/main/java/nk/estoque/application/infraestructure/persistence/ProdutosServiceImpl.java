@@ -1,9 +1,12 @@
 package nk.estoque.application.infraestructure.persistence;
 
-import nk.estoque.application.infraestructure.entity.Produto;
+import nk.estoque.application.infraestructure.entity.ProdutoEntity;
 import nk.estoque.application.infraestructure.exceptions.IdNaoEncontradoException;
+import nk.estoque.domain.produto.Produto;
 import nk.estoque.domain.produto.ProdutosService;
 import nk.estoque.application.infraestructure.repository.ProdutoRepository;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProdutosServiceImpl implements ProdutosService {
@@ -14,26 +17,38 @@ public class ProdutosServiceImpl implements ProdutosService {
     }
 
     @Override
-    public List<Produto> listaPaginada() {
+    public List<ProdutoEntity> listaPaginada() {
         return produtoRepository.findAll();
     }
 
     @Override
-    public Produto criar(Produto produto) {
-        return produtoRepository.save(produto);
+    public List<ProdutoEntity> produtosPorId(List<Long> ids) {
+        List<ProdutoEntity> produtos = produtoRepository.findAllById(ids);
+
+        if (produtos.size() != ids.size()) {
+            List<Long> idsNaoEncontrados = new ArrayList<>(ids);
+            produtos.forEach(produto -> idsNaoEncontrados.remove(produto.getId()));
+
+            throw new IdNaoEncontradoException("Produtos com os IDs não encontrados: " + idsNaoEncontrados);
+        }
+
+        return produtos;
     }
 
     @Override
-    public Produto atualizarProduto(Long id, Produto produto) {
-        Produto produtoEncontrado = produtoRepository.findById(id)
+    public ProdutoEntity criar(Produto produto) {
+        ProdutoEntity produtoEntity = ProdutoEntity.fromProduto(produto);
+        return produtoRepository.save(produtoEntity);
+    }
+
+    @Override
+    public ProdutoEntity atualizarProduto(Long id, Produto produto) {
+        ProdutoEntity produtoEntity = produtoRepository.findById(id)
                 .orElseThrow(() -> new IdNaoEncontradoException("Produto com ID " + id + " não encontrado"));
 
-        produtoEncontrado.setNome(produto.getNome());
-        produtoEncontrado.setValor(produto.getValor());
-        produtoEncontrado.setQuantidadeItens(produto.getQuantidadeItens());
-        produtoEncontrado.setCodigoProduto(produto.getCodigoProduto());
+        //TODO IMPLEMENTAR A ATUALIZAÇÃO DO PRODUTO
 
-        return produtoRepository.save(produtoEncontrado);
+        return produtoRepository.save(produtoEntity);
 
     }
 

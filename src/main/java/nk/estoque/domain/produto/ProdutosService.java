@@ -1,17 +1,17 @@
 package nk.estoque.domain.produto;
 
-import nk.estoque.application.infraestructure.entity.Produto;
-import org.springframework.stereotype.Service;
+import nk.estoque.application.infraestructure.entity.ProdutoEntity;
 
 import java.util.List;
 
-@Service
 public interface ProdutosService {
-    List<Produto> listaPaginada();
+    List<ProdutoEntity> listaPaginada();
 
-    Produto criar(Produto produto);
+    List<ProdutoEntity> produtosPorId(List<Long> ids);
 
-    Produto atualizarProduto(Long id, Produto novoProduto);
+    ProdutoEntity criar(Produto produto);
+
+    ProdutoEntity atualizarProduto(Long id, Produto produto);
 
     void deletarProduto(Long id);
 }

@@ -1,7 +1,8 @@
 package nk.estoque.application.infraestructure.web.servico;
 
 import jakarta.validation.Valid;
-import nk.estoque.application.infraestructure.entity.Servico;
+import nk.estoque.application.infraestructure.entity.ServicoEntity;
+import nk.estoque.domain.servico.Servico;
 import nk.estoque.domain.servico.ServicoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.*;
 
 @Controller
-@RequestMapping("/servico")
+@RequestMapping("/servicos")
 public class ServicoController {
 
     private final ServicoService servicoService;
@@ -23,18 +24,18 @@ public class ServicoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Servico>> get() {
+    public ResponseEntity<List<ServicoEntity>> get() {
         return new ResponseEntity<>(servicoService.listaPaginada(), OK) ;
     }
 
     @PostMapping
-    public ResponseEntity<Servico> post(@Valid @RequestBody ServicoPayload servicoPayload) {
+    public ResponseEntity<ServicoEntity> post(@Valid @RequestBody ServicoPayload servicoPayload) {
         Servico servico = servicoPayload.toServico();
         return new ResponseEntity<>(servicoService.criar(servico), CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Servico> put(@PathVariable Long id, @Valid @RequestBody ServicoPayload servicoPayload) {
+    public ResponseEntity<ServicoEntity> put(@PathVariable Long id, @Valid @RequestBody ServicoPayload servicoPayload) {
         Servico servico = servicoPayload.toServico();
         return new ResponseEntity<>(servicoService.atualizarServico(id, servico), OK);
     }

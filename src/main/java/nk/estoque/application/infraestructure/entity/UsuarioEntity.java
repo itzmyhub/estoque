@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.User;
 
 import java.io.Serializable;
 import java.security.Timestamp;
-import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -21,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Usuario implements Serializable {
+public class UsuarioEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
