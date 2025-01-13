@@ -41,7 +41,7 @@ class ProdutoControllerTest extends BaseWebControllerTest {
     produto1.setNome("Evaporador");
     Produto produto2 = new Produto();
     produto2.setNome("Compressor");
-    when(todosProdutos.listaPaginada()).thenReturn(List.of(produto1, produto2));
+    when(todosProdutos.listaPaginada(pageable)).thenReturn(List.of(produto1, produto2));
 
     ResultActions resultActions = mockMvc.perform(get("/produtos").header("Authorization", "Bearer " + authorizedToken)
             .contentType(APPLICATION_JSON_VALUE)

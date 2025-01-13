@@ -1,19 +1,20 @@
 package nk.estoque.application.infraestructure.web.produto;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static org.springframework.http.HttpStatus.OK;
-
 import jakarta.validation.Valid;
-import java.util.List;
 import nk.estoque.application.infraestructure.entity.Produto;
 import nk.estoque.domain.model.produto.TodosProdutos;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.HttpStatus.*;
+
 @RestController
 @RequestMapping(path = "/produtos")
+@CrossOrigin(origins = "http://localhost:3039", methods = {RequestMethod.PUT, RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
 public class ProdutoController {
     private final TodosProdutos todosProdutos;
 
@@ -22,13 +23,13 @@ public class ProdutoController {
     }
 
     @GetMapping("/admin")
-    public ResponseEntity<List<Produto>> getForAdmin() {
-        return new ResponseEntity<>(todosProdutos.listaPaginada(), OK);
+    public ResponseEntity<Page<Produto>> getForAdmin(@PageableDefault Pageable pageable) {
+        return new ResponseEntity<>(todosProdutos.listaPaginada(pageable), OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<Produto>> get() {
-        return new ResponseEntity<>(todosProdutos.listaPaginada(), OK);
+    public ResponseEntity<Page<Produto>> get(@PageableDefault Pageable pageable, ProdutoFilter filter) {
+        return new ResponseEntity<>(todosProdutos.listaPaginada(pageable, filter), OK);
     }
 
     @PostMapping("/admin")

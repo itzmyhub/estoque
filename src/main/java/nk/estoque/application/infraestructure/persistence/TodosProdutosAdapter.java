@@ -1,9 +1,12 @@
 package nk.estoque.application.infraestructure.persistence;
 
 import nk.estoque.application.infraestructure.entity.Produto;
-import nk.estoque.domain.model.produto.TodosProdutos;
 import nk.estoque.application.infraestructure.repository.ProdutoRepository;
-import java.util.List;
+import nk.estoque.application.infraestructure.web.produto.ProdutoFilter;
+import nk.estoque.domain.model.produto.TodosProdutos;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.Optional;
 
 public class TodosProdutosAdapter implements TodosProdutos {
@@ -13,9 +16,15 @@ public class TodosProdutosAdapter implements TodosProdutos {
         this.produtoRepository = produtoRepository;
     }
 
-    @Override
-    public List<Produto> listaPaginada() {
-        return produtoRepository.findAll();
+    public Page<Produto> listaPaginada(Pageable pageable) {
+        return produtoRepository.findAll(pageable);
+    }
+
+    public Page<Produto> listaPaginada(Pageable pageable, ProdutoFilter filter) {
+        if (filter.getNome().isEmpty()) {
+            return produtoRepository.findAll(pageable);
+        }
+        return produtoRepository.findByNomeContainingIgnoreCase(filter.getNome().get(), pageable);
     }
 
     @Override
