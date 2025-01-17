@@ -1,8 +1,8 @@
 package nk.estoque.application.infraestructure.service.pedido;
 
-import nk.estoque.domain.pedido.PedidoProdutos;
+import nk.estoque.application.infraestructure.entity.pedido.PedidoProdutosEntity;
 
 public interface PedidoProdutosService {
 
-    void criaPedidoComProdutos(PedidoProdutos pedidoProdutos, PedidoService pedidoService);
+    void criaPedidoComProdutos(PedidoProdutosEntity pedidoProdutosEntity, PedidoService pedidoService);
 }

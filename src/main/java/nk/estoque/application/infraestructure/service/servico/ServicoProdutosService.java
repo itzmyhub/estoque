@@ -1,8 +1,8 @@
 package nk.estoque.application.infraestructure.service.servico;
 
-import nk.estoque.domain.servico.ServicoProdutos;
+import nk.estoque.application.infraestructure.entity.servico.ServicoProdutosEntity;
 
 public interface ServicoProdutosService {
 
-    void criarServicoComProdutos(ServicoProdutos servicoProdutos, ServicoService servicoService);
+    void criarServicoComProdutos(ServicoProdutosEntity servicoProdutosEntity, ServicoService servicoService);
 }

@@ -3,10 +3,8 @@ package nk.estoque.application.infraestructure.service.servico;
 import nk.estoque.application.infraestructure.entity.produto.ProdutoEntity;
 import nk.estoque.application.infraestructure.entity.servico.ServicoEntity;
 import nk.estoque.application.infraestructure.entity.servico.ServicoProdutosEntity;
-import nk.estoque.application.infraestructure.entity.servico.ServicoProdutosKey;
 import nk.estoque.application.infraestructure.persistence.repository.ServicoProdutosRepository;
 import nk.estoque.application.infraestructure.service.produto.ProdutosService;
-import nk.estoque.domain.servico.ServicoProdutos;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,17 +20,13 @@ public class ServicoProdutosServiceImpl implements ServicoProdutosService {
     }
 
     @Override
-    public void criarServicoComProdutos(ServicoProdutos servicoProdutos, ServicoService servicoService) {
+    public void criarServicoComProdutos(ServicoProdutosEntity servicoProdutosEntity, ServicoService servicoService) {
 
-        ServicoProdutosEntity servicoProdutosEntity = new ServicoProdutosEntity();
-
-        ProdutoEntity produto = produtosService.produtoPorId(servicoProdutos.getProdutoId());
-        ServicoEntity servico = servicoService.servicoPorId(servicoProdutos.getServicoId());
+        ProdutoEntity produto = produtosService.produtoPorId(servicoProdutosEntity.getId().getProdutoId());
+        ServicoEntity servico = servicoService.servicoPorId(servicoProdutosEntity.getId().getServicoId());
 
         servicoProdutosEntity.setProduto(produto);
         servicoProdutosEntity.setServico(servico);
-        servicoProdutosEntity.setId(new ServicoProdutosKey(produto.getId(), servico.getId()));
-        servicoProdutosEntity.setQuantidade(servicoProdutos.getQuantidade());
 
         servicoProdutosRepository.save(servicoProdutosEntity);
     }

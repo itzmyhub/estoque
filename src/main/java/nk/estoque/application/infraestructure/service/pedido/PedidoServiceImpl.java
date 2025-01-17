@@ -67,8 +67,8 @@ public class PedidoServiceImpl implements PedidoService {
             pedidoEntity.setCliente(clienteService.clientePorId(pedido.getClienteId()));
             pedidoRepository.save(pedidoEntity);
 
-            pedido.getPedidoProdutos().forEach(pedidoProdutos -> {
-                pedidoProdutos.setPedidoId(pedidoEntity.getId());
+            pedidoEntity.getPedidoProdutos().forEach(pedidoProdutos -> {
+                pedidoProdutos.getId().setPedidoId(pedidoEntity.getId());
                 pedidoProdutosService.criaPedidoComProdutos(pedidoProdutos, this);
             });
 

@@ -54,7 +54,8 @@ public class ServicoServiceImpl implements ServicoService {
 
         servicoEntity.setTotalValue(servico.calcularTotalValue(produtos));
 
-        servico.getServicoProdutos().forEach(servicoProdutos -> {
+        servicoEntity.getServicoProdutos().forEach(servicoProdutos -> {
+            servicoProdutos.getId().setServicoId(servicoEntity.getId());
             servicoProdutosService.criarServicoComProdutos(servicoProdutos, this);
         });
 
