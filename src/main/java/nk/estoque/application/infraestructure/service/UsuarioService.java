@@ -1,7 +1,7 @@
 package nk.estoque.application.infraestructure.service;
 
 import nk.estoque.application.infraestructure.entity.UsuarioEntity;
-import nk.estoque.application.infraestructure.repository.UsuarioRepository;
+import nk.estoque.application.infraestructure.persistence.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;

@@ -3,8 +3,7 @@ package nk.estoque.application.infraestructure.entity.servico;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import nk.estoque.application.infraestructure.entity.ProdutoEntity;
-import nk.estoque.application.infraestructure.entity.ServicoEntity;
+import nk.estoque.application.infraestructure.entity.produto.ProdutoEntity;
 import nk.estoque.domain.servico.ServicoProdutos;
 
 import java.util.List;

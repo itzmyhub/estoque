@@ -1,7 +1,7 @@
 package nk.estoque.domain.servico;
 
 import lombok.Data;
-import nk.estoque.application.infraestructure.entity.ProdutoEntity;
+import nk.estoque.application.infraestructure.entity.produto.ProdutoEntity;
 
 import java.math.BigDecimal;
 import java.util.List;

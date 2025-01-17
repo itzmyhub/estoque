@@ -2,8 +2,8 @@ package nk.estoque.application.infraestructure.web;
 
 import nk.estoque.application.infraestructure.security.JwtTokenUtil;
 import nk.estoque.application.infraestructure.service.UsuarioService;
-import nk.estoque.domain.funcionario.FuncionarioService;
-import nk.estoque.domain.pedido.PedidoService;
+import nk.estoque.application.infraestructure.service.funcionario.FuncionarioService;
+import nk.estoque.application.infraestructure.service.pedido.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

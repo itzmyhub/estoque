@@ -1,9 +1,10 @@
 package nk.estoque.application.infraestructure.web.pedido;
 
 import jakarta.validation.Valid;
-import nk.estoque.application.infraestructure.entity.PedidoEntity;
+import nk.estoque.application.infraestructure.entity.pedido.PedidoEntity;
+import nk.estoque.application.infraestructure.payloads.PedidoPayload;
 import nk.estoque.domain.pedido.Pedido;
-import nk.estoque.domain.pedido.PedidoService;
+import nk.estoque.application.infraestructure.service.pedido.PedidoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

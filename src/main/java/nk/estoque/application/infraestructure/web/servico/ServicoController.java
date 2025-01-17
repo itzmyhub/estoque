@@ -1,9 +1,10 @@
 package nk.estoque.application.infraestructure.web.servico;
 
 import jakarta.validation.Valid;
-import nk.estoque.application.infraestructure.entity.ServicoEntity;
+import nk.estoque.application.infraestructure.entity.servico.ServicoEntity;
+import nk.estoque.application.infraestructure.payloads.ServicoPayload;
 import nk.estoque.domain.servico.Servico;
-import nk.estoque.domain.servico.ServicoService;
+import nk.estoque.application.infraestructure.service.servico.ServicoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

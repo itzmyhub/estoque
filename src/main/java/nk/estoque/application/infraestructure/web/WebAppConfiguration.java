@@ -1,14 +1,20 @@
 package nk.estoque.application.infraestructure.web;
 
-import nk.estoque.application.infraestructure.persistence.*;
-import nk.estoque.application.infraestructure.repository.*;
-import nk.estoque.domain.cliente.ClienteService;
-import nk.estoque.domain.funcionario.FuncionarioService;
-import nk.estoque.domain.pedido.PedidoProdutosService;
-import nk.estoque.domain.produto.ProdutosService;
-import nk.estoque.domain.pedido.PedidoService;
-import nk.estoque.domain.servico.ServicoProdutosService;
-import nk.estoque.domain.servico.ServicoService;
+import nk.estoque.application.infraestructure.persistence.repository.*;
+import nk.estoque.application.infraestructure.service.cliente.ClienteServiceImpl;
+import nk.estoque.application.infraestructure.service.funcionario.FuncionarioServiceImpl;
+import nk.estoque.application.infraestructure.service.pedido.PedidoProdutosServiceImpl;
+import nk.estoque.application.infraestructure.service.pedido.PedidoServiceImpl;
+import nk.estoque.application.infraestructure.service.produto.ProdutosServiceImpl;
+import nk.estoque.application.infraestructure.service.servico.ServicoProdutosServiceImpl;
+import nk.estoque.application.infraestructure.service.servico.ServicoServiceImpl;
+import nk.estoque.application.infraestructure.service.cliente.ClienteService;
+import nk.estoque.application.infraestructure.service.funcionario.FuncionarioService;
+import nk.estoque.application.infraestructure.service.pedido.PedidoProdutosService;
+import nk.estoque.application.infraestructure.service.produto.ProdutosService;
+import nk.estoque.application.infraestructure.service.pedido.PedidoService;
+import nk.estoque.application.infraestructure.service.servico.ServicoProdutosService;
+import nk.estoque.application.infraestructure.service.servico.ServicoService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

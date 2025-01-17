@@ -1,8 +1,9 @@
 package nk.estoque.application.infraestructure.web.cliente;
 
-import nk.estoque.application.infraestructure.entity.ClienteEntity;
+import nk.estoque.application.infraestructure.entity.cliente.ClienteEntity;
+import nk.estoque.application.infraestructure.payloads.ClientePayload;
 import nk.estoque.domain.cliente.Cliente;
-import nk.estoque.domain.cliente.ClienteService;
+import nk.estoque.application.infraestructure.service.cliente.ClienteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

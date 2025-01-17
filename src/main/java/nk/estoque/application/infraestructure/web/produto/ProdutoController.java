@@ -6,9 +6,10 @@ import static org.springframework.http.HttpStatus.OK;
 
 import jakarta.validation.Valid;
 import java.util.List;
-import nk.estoque.application.infraestructure.entity.ProdutoEntity;
+import nk.estoque.application.infraestructure.entity.produto.ProdutoEntity;
+import nk.estoque.application.infraestructure.payloads.ProdutoPayload;
 import nk.estoque.domain.produto.Produto;
-import nk.estoque.domain.produto.ProdutosService;
+import nk.estoque.application.infraestructure.service.produto.ProdutosService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

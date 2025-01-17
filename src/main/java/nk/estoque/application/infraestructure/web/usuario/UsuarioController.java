@@ -5,6 +5,7 @@ import static org.springframework.http.HttpStatus.OK;
 import jakarta.validation.Valid;
 import java.util.List;
 import nk.estoque.application.infraestructure.entity.UsuarioEntity;
+import nk.estoque.application.infraestructure.payloads.UsuarioPayLoad;
 import nk.estoque.application.infraestructure.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
