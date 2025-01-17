@@ -9,6 +9,8 @@ public interface ProdutosService {
 
     List<ProdutoEntity> produtosPorId(List<Long> ids);
 
+    ProdutoEntity produtoPorId(Long id);
+
     ProdutoEntity criar(Produto produto);
 
     ProdutoEntity atualizarProduto(Long id, Produto produto);

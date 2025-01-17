@@ -6,7 +6,6 @@ import nk.estoque.domain.produto.Produto;
 import nk.estoque.domain.produto.ProdutosService;
 import nk.estoque.application.infraestructure.repository.ProdutoRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProdutosServiceImpl implements ProdutosService {
@@ -23,16 +22,12 @@ public class ProdutosServiceImpl implements ProdutosService {
 
     @Override
     public List<ProdutoEntity> produtosPorId(List<Long> ids) {
-        List<ProdutoEntity> produtos = produtoRepository.findAllById(ids);
+        return produtoRepository.findAllById(ids);
+    }
 
-        if (produtos.size() != ids.size()) {
-            List<Long> idsNaoEncontrados = new ArrayList<>(ids);
-            produtos.forEach(produto -> idsNaoEncontrados.remove(produto.getId()));
-
-            throw new IdNaoEncontradoException("Produtos com os IDs não encontrados: " + idsNaoEncontrados);
-        }
-
-        return produtos;
+    @Override
+    public ProdutoEntity produtoPorId(Long id) {
+        return produtoRepository.findById(id).orElseThrow(() -> new IdNaoEncontradoException("Produto com ID " + id + " não encontrado"));
     }
 
     @Override

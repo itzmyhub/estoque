@@ -10,11 +10,11 @@ import java.util.List;
 public class Pedido {
     private Long id;
     private BigDecimal valorAdicional;
-    private List<Long> produtos;
-    private Long funcionario;
-    private Long cliente;
+    private Long funcionarioId;
+    private Long clienteId;
+    private List<Long> servicosId;
     private LocalDateTime dataHora;
-    private List<Long> servicos;
+    private List<PedidoProdutos> pedidoProdutos;
     private BigDecimal valorFinal;
 
     // TODO implementar lógica aqui

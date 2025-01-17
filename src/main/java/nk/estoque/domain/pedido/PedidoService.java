@@ -13,4 +13,6 @@ public interface PedidoService {
     PedidoEntity atualizarPedido(Long id, Pedido pedido);
 
     void deletarPedido(Long id);
+
+    PedidoEntity pedidoPorId(Long pedidoId);
 }

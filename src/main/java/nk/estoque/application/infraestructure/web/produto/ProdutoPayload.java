@@ -1,6 +1,7 @@
 package nk.estoque.application.infraestructure.web.produto;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import nk.estoque.application.infraestructure.entity.servico.ServicoProdutosEntity;
 import nk.estoque.domain.produto.Produto;
 import nk.estoque.domain.produto.models.CodigoDeBarras;
 import nk.estoque.domain.produto.models.Detalhe;
@@ -24,6 +25,8 @@ public class ProdutoPayload {
     @PositiveOrZero(message = "A quantidade de itens deve ser maior ou igual a zero")
     private Integer quantidadeEstoque;
 
+    private ServicoProdutosEntity quantidadeEmServico;
+
     @NotNull(message = "O código do produto é obrigatório!")
     private CodigoDeBarras codigoDeBarras;
 
@@ -34,13 +37,7 @@ public class ProdutoPayload {
     private boolean emEstoque;
 
     public Produto toProduto() {
-        Produto produto = new Produto();
-        produto.setNome(nome);
-        produto.setValor(valor);
-        produto.setQuantidadeEstoque(quantidadeEstoque);
-        produto.setCodigoDeBarras(codigoDeBarras);
-        produto.setMarca(marca);
-        produto.setDetalhe(detalhe);
+        Produto produto = new Produto(nome, valor, quantidadeEstoque, codigoDeBarras, marca, detalhe);
         produto.temQuantidadeEmEstoque();
         return produto;
     }

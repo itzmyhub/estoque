@@ -1,10 +1,12 @@
 package nk.estoque.application.infraestructure.persistence;
 
+import nk.estoque.application.infraestructure.entity.ProdutoEntity;
 import nk.estoque.application.infraestructure.entity.ServicoEntity;
 import nk.estoque.application.infraestructure.exceptions.IdNaoEncontradoException;
 import nk.estoque.application.infraestructure.repository.ServicoRepository;
 import nk.estoque.domain.produto.ProdutosService;
 import nk.estoque.domain.servico.Servico;
+import nk.estoque.domain.servico.ServicoProdutosService;
 import nk.estoque.domain.servico.ServicoService;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +20,12 @@ public class ServicoServiceImpl implements ServicoService {
 
     private final ProdutosService produtosService;
 
-    public ServicoServiceImpl(ServicoRepository servicoRepository, ProdutosService produtosService) {
+    private final ServicoProdutosService servicoProdutosService;
+
+    public ServicoServiceImpl(ServicoRepository servicoRepository, ProdutosService produtosService, ServicoProdutosService servicoProdutosService) {
         this.servicoRepository = servicoRepository;
         this.produtosService = produtosService;
+        this.servicoProdutosService = servicoProdutosService;
     }
 
     @Override
@@ -30,23 +35,32 @@ public class ServicoServiceImpl implements ServicoService {
 
     @Override
     public List<ServicoEntity> servicosPorId(List<Long> ids) {
-        List<ServicoEntity> servicos = servicoRepository.findAllById(ids);
-
-        if (servicos.size() != ids.size()) {
-            List<Long> idsNaoEncontrados = new ArrayList<>(ids);
-            servicos.forEach(servico -> idsNaoEncontrados.remove(servico.getId()));
-
-            throw new IdNaoEncontradoException("Serviços com os IDs não encontrados: " + idsNaoEncontrados);
-        }
-
-        return servicos;
+        return servicoRepository.findAllById(ids);
     }
 
     @Override
+    public ServicoEntity servicoPorId(Long id) { return servicoRepository.findById(id).orElseThrow(() -> new IdNaoEncontradoException("Serviço com ID " + id + " não encontrado"));}
+
+    @Override
     public ServicoEntity criar(Servico servico) {
+
+        List<ProdutoEntity> produtos = new ArrayList<>();
+
         ServicoEntity servicoEntity = ServicoEntity.fromServico(servico);
-        servicoEntity.setProdutos(produtosService.produtosPorId(servico.getProdutos()));
-        return servicoRepository.save(servicoEntity);
+        servicoRepository.save(servicoEntity);
+
+        servico.getServicoProdutos().forEach(servicoProdutos -> {
+            servicoProdutos.setServicoId(servicoEntity.getId());
+            produtos.add(produtosService.produtoPorId(servicoProdutos.getProdutoId()));
+        });
+
+        servicoEntity.setTotalValue(servico.calcularTotalValue(produtos));
+
+        servico.getServicoProdutos().forEach(servicoProdutos -> {
+            servicoProdutosService.criarServicoComProdutos(servicoProdutos, this);
+        });
+
+        return servicoEntity;
     }
 
     @Override

@@ -9,6 +9,8 @@ public interface ServicoService {
 
     List<ServicoEntity> servicosPorId(List<Long> ids);
 
+    ServicoEntity servicoPorId(Long id);
+
     ServicoEntity criar(Servico servico);
 
     ServicoEntity atualizarServico(Long id, Servico novoServico);

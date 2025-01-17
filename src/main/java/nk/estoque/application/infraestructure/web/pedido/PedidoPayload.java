@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import nk.estoque.domain.pedido.Pedido;
+import nk.estoque.domain.pedido.PedidoProdutos;
 
 @Data
 public class PedidoPayload {
@@ -16,13 +17,13 @@ public class PedidoPayload {
     @DecimalMin(value = "0.00", message = "O valor deve ser maior ou igual a zero!")
     private BigDecimal valorAdicional;
 
-    private List<Long> produtos;
+    private List<PedidoProdutos> pedidoProdutos;
 
-    private List<Long> servicos;
+    private List<Long> servicosId;
 
-    private Long funcionario;
+    private Long funcionarioId;
 
-    private Long cliente;
+    private Long clienteId;
 
     @NotNull
     private LocalDateTime dataHora;
@@ -33,10 +34,10 @@ public class PedidoPayload {
     public Pedido toPedido() {
         Pedido pedido = new Pedido();
         pedido.setValorAdicional(valorAdicional);
-        pedido.setProdutos(produtos);
-        pedido.setServicos(servicos);
-        pedido.setFuncionario(funcionario);
-        pedido.setCliente(cliente);
+        pedido.setPedidoProdutos(pedidoProdutos);
+        pedido.setServicosId(servicosId);
+        pedido.setFuncionarioId(funcionarioId);
+        pedido.setClienteId(clienteId);
         pedido.setValorFinal(valorFinal);
         return pedido;
     }

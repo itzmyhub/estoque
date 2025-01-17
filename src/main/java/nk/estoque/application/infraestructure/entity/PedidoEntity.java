@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nk.estoque.application.infraestructure.entity.pedido.PedidoProdutosEntity;
 import nk.estoque.domain.pedido.Pedido;
 
 import java.math.BigDecimal;
@@ -24,8 +25,8 @@ public class PedidoEntity {
     @Column
     private BigDecimal valorAdicional;
 
-    @ManyToMany
-    private List<ProdutoEntity> produtos;
+    @OneToMany(mappedBy = "pedido")
+    private List<PedidoProdutosEntity> pedidoProdutos;
 
     @ManyToMany
     private List<ServicoEntity> servicos;
@@ -46,6 +47,7 @@ public class PedidoEntity {
                 .valorAdicional(pedido.getValorAdicional())
                 .dataHora(pedido.getDataHora())
                 .valorFinal(pedido.getValorFinal())
+                .pedidoProdutos(PedidoProdutosEntity.fromPedidoProdutosList(pedido.getPedidoProdutos()))
                 .build();
     }
 }

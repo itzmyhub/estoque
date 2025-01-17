@@ -5,11 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nk.estoque.application.infraestructure.entity.servico.ServicoProdutosEntity;
 import nk.estoque.domain.servico.Servico;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -22,8 +22,8 @@ public class ServicoEntity {
     @GeneratedValue
     private Long id;
 
-    @ManyToMany
-    private List<ProdutoEntity> produtos;
+    @OneToMany(mappedBy = "servico")
+    List<ServicoProdutosEntity> servicoProdutos;
 
     @Column
     private BigDecimal maoDeObra;
@@ -35,12 +35,7 @@ public class ServicoEntity {
         return ServicoEntity.builder()
                 .id(servico.getId())
                 .maoDeObra(servico.getMaoDeObra())
+                .servicoProdutos(ServicoProdutosEntity.fromServicoProdutosList(servico.getServicoProdutos()))
                 .build();
-    }
-
-    public static List<ServicoEntity> fromServicos(List<Servico> servicos) {
-        return servicos.stream()
-                .map(ServicoEntity::fromServico)
-                .collect(Collectors.toList());
     }
 }
