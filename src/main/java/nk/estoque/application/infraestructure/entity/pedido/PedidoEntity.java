@@ -44,11 +44,11 @@ public class PedidoEntity {
     @Column
     private BigDecimal valorFinal;
 
-    public static PedidoEntity fromPedido(Pedido pedido) {
+    public static PedidoEntity fromPedido(Pedido pedido, BigDecimal valorTotalServicos, BigDecimal valorTotalProdutos){
         return PedidoEntity.builder()
                 .valorAdicional(pedido.getValorAdicional())
                 .dataHora(pedido.getDataHora())
-                .valorFinal(pedido.getValorFinal())
+                .valorFinal(pedido.calculaValorFinal(valorTotalServicos, valorTotalProdutos))
                 .pedidoProdutos(PedidoProdutosEntity.fromPedidoProdutosList(pedido.getPedidoProdutos()))
                 .build();
     }

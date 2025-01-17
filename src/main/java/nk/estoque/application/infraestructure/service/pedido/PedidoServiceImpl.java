@@ -2,6 +2,7 @@ package nk.estoque.application.infraestructure.service.pedido;
 
 import nk.estoque.application.infraestructure.entity.pedido.PedidoEntity;
 import nk.estoque.application.infraestructure.entity.produto.ProdutoEntity;
+import nk.estoque.application.infraestructure.entity.servico.ServicoEntity;
 import nk.estoque.application.infraestructure.utils.exceptions.IdNaoEncontradoException;
 import nk.estoque.application.infraestructure.persistence.repository.PedidoRepository;
 import nk.estoque.application.infraestructure.service.cliente.ClienteService;
@@ -11,6 +12,7 @@ import nk.estoque.application.infraestructure.service.produto.ProdutosService;
 import nk.estoque.application.infraestructure.service.servico.ServicoService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,24 +43,38 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public PedidoEntity criarPedido(Pedido pedido) {
 
+        List<ServicoEntity> servicos = servicoService.servicosPorId(pedido.getServicosId());
+
         List<ProdutoEntity> produtos = new ArrayList<>();
 
-        PedidoEntity pedidoEntity = PedidoEntity.fromPedido(pedido);
-        pedidoEntity.setServicos(servicoService.servicosPorId(pedido.getServicosId()));
-        pedidoEntity.setFuncionario(funcionarioService.funcionarioPorId(pedido.getFuncionarioId()));
-        pedidoEntity.setCliente(clienteService.clientePorId(pedido.getClienteId()));
-        pedidoRepository.save(pedidoEntity);
-
-        pedido.getPedidoProdutos().forEach(pedidoProdutos -> {
-            pedidoProdutos.setPedidoId(pedidoEntity.getId());
-            produtos.add(produtosService.produtoPorId(pedidoProdutos.getProdutoId()));
+        pedido.getPedidoProdutos().forEach(pedidoProduto -> {
+            produtos.add(produtosService.produtoPorId(pedidoProduto.getProdutoId()));
         });
 
-        pedido.getPedidoProdutos().forEach(pedidoProdutos -> {
-            pedidoProdutosService.criaPedidoComProdutos(pedidoProdutos, this);
-        });
+        BigDecimal valorTotalServicos = servicos.stream()
+                .map(ServicoEntity::getTotalValue)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        return pedidoEntity;
+        BigDecimal valorTotalProdutos = produtos.stream()
+                .map(ProdutoEntity::getValor)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        PedidoEntity pedidoEntity = PedidoEntity.fromPedido(pedido, valorTotalServicos, valorTotalProdutos);
+
+        if(pedido.podeSerCriadoPedido()) {
+            pedidoEntity.setServicos(servicos);
+            pedidoEntity.setFuncionario(funcionarioService.funcionarioPorId(pedido.getFuncionarioId()));
+            pedidoEntity.setCliente(clienteService.clientePorId(pedido.getClienteId()));
+            pedidoRepository.save(pedidoEntity);
+
+            pedido.getPedidoProdutos().forEach(pedidoProdutos -> {
+                pedidoProdutos.setPedidoId(pedidoEntity.getId());
+                pedidoProdutosService.criaPedidoComProdutos(pedidoProdutos, this);
+            });
+
+            return pedidoEntity;
+        }
+        throw new RuntimeException();
     }
 
     @Override

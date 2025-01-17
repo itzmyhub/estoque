@@ -17,5 +17,12 @@ public class Pedido {
     private List<PedidoProdutos> pedidoProdutos;
     private BigDecimal valorFinal;
 
-    // TODO implementar lógica aqui
+    public boolean podeSerCriadoPedido() {
+        return true;
+    }
+
+    public BigDecimal calculaValorFinal(BigDecimal valorTotalServicos, BigDecimal valorTotalProdutos) {
+        return valorAdicional.add(valorTotalProdutos.add(valorTotalServicos));
+    }
+
 }
