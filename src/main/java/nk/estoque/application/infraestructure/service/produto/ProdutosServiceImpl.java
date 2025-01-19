@@ -2,8 +2,11 @@ package nk.estoque.application.infraestructure.service.produto;
 
 import nk.estoque.application.infraestructure.entity.produto.ProdutoEntity;
 import nk.estoque.application.infraestructure.utils.exceptions.IdNaoEncontradoException;
+import nk.estoque.application.infraestructure.web.produto.ProdutoFilter;
 import nk.estoque.domain.produto.Produto;
 import nk.estoque.application.infraestructure.persistence.repository.ProdutoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -15,8 +18,16 @@ public class ProdutosServiceImpl implements ProdutosService {
     }
 
     @Override
-    public List<ProdutoEntity> listaPaginada() {
-        return produtoRepository.findAll();
+    public Page<ProdutoEntity> listaPaginada(Pageable pageable) {
+        return produtoRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<ProdutoEntity> listaPaginada(Pageable pageable, ProdutoFilter filter) {
+        if (filter.getNome().isEmpty()) {
+            return produtoRepository.findAll(pageable);
+        }
+        return produtoRepository.findByNomeContainingIgnoreCase(filter.getNome().get(), pageable);
     }
 
     @Override
