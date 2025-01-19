@@ -28,8 +28,9 @@ public class PedidoPayload {
     @NotNull
     private LocalDateTime dataHora;
 
-    @NotNull
     private BigDecimal valorFinal;
+
+    //TODO adicionar opção DESCONTO
 
     public Pedido toPedido() {
         Pedido pedido = new Pedido();

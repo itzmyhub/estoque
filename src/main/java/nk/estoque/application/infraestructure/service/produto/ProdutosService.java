@@ -16,5 +16,7 @@ public interface ProdutosService {
 
     ProdutoEntity atualizarProduto(Long id, Produto produto);
 
+    void atualizarProdutos(List<ProdutoEntity> produtoEntities);
+
     void deletarProduto(Long id);
 }

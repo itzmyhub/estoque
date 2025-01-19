@@ -6,6 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nk.estoque.domain.produto.models.CodigoDeBarras;
+import nk.estoque.domain.produto.models.Detalhe;
+import nk.estoque.domain.produto.models.Marca;
+import nk.estoque.domain.produto.models.TipoCodigoDeBarras;
 
 import java.math.BigDecimal;
 
@@ -47,5 +51,32 @@ public class ProdutoEntity {
                 .marca(produto.getMarca().nome())
                 .detalhe(produto.getDetalhe().descricao())
                 .build();
+    }
+
+    public static Produto fromEntityToDomain(ProdutoEntity produtoEntity) {
+        if (produtoEntity == null) {
+            return null;
+        }
+
+        Produto produto = new Produto();
+        produto.setId(produtoEntity.getId());
+        produto.setNome(produtoEntity.getNome());
+        produto.setValor(produtoEntity.getValor());
+        produto.setQuantidadeEstoque(produtoEntity.getQuantidadeEstoque());
+        produto.temQuantidadeEmEstoque();
+
+        if (produtoEntity.getCodigoDeBarras() != null) {
+            produto.setCodigoDeBarras(new CodigoDeBarras(produtoEntity.getCodigoDeBarras(), TipoCodigoDeBarras.EAN13));
+        }
+
+        if (produtoEntity.getMarca() != null) {
+            produto.setMarca(new Marca(produtoEntity.getMarca()));
+        }
+
+        if (produtoEntity.getDetalhe() != null) {
+            produto.setDetalhe(new Detalhe(produtoEntity.getDetalhe()));
+        }
+
+        return produto;
     }
 }

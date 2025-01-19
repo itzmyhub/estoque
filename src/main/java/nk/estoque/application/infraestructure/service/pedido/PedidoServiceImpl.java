@@ -3,10 +3,12 @@ package nk.estoque.application.infraestructure.service.pedido;
 import nk.estoque.application.infraestructure.entity.pedido.PedidoEntity;
 import nk.estoque.application.infraestructure.entity.produto.ProdutoEntity;
 import nk.estoque.application.infraestructure.entity.servico.ServicoEntity;
+import nk.estoque.application.infraestructure.entity.servico.ServicoProdutosEntity;
 import nk.estoque.application.infraestructure.utils.exceptions.IdNaoEncontradoException;
 import nk.estoque.application.infraestructure.persistence.repository.PedidoRepository;
 import nk.estoque.application.infraestructure.service.cliente.ClienteService;
 import nk.estoque.application.infraestructure.service.funcionario.FuncionarioService;
+import nk.estoque.application.infraestructure.utils.exceptions.ProdutosInsuficientesException;
 import nk.estoque.domain.pedido.Pedido;
 import nk.estoque.application.infraestructure.service.produto.ProdutosService;
 import nk.estoque.application.infraestructure.service.servico.ServicoService;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class PedidoServiceImpl implements PedidoService {
@@ -43,38 +46,51 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public PedidoEntity criarPedido(Pedido pedido) {
 
-        List<ServicoEntity> servicos = servicoService.servicosPorId(pedido.getServicosId());
+        AtomicReference<BigDecimal> valorTotalProdutos = new AtomicReference<>(BigDecimal.ZERO);
 
+        List<ServicoEntity> servicos = servicoService.servicosPorId(pedido.getServicosId());
+        List<List<ServicoProdutosEntity>> servicoProdutosEntities = servicos.stream().map(ServicoEntity::getServicoProdutos).toList();
         List<ProdutoEntity> produtos = new ArrayList<>();
 
         pedido.getPedidoProdutos().forEach(pedidoProduto -> {
-            produtos.add(produtosService.produtoPorId(pedidoProduto.getProdutoId()));
+            if(pedidoProduto.getQuantidade() > produtosService.produtoPorId(pedidoProduto.getProdutoId()).getQuantidadeEstoque()) {
+                throw new ProdutosInsuficientesException("Produto com ID " + pedidoProduto.getProdutoId() + " não possui quantidade suficiente em Estoque!");
+            }
+            produtos.add(pedido.atualizaQuantidadeProduto(produtosService.produtoPorId(pedidoProduto.getProdutoId()), pedidoProduto.getQuantidade()));
+            valorTotalProdutos.set(produtos.stream()
+                    .map(ProdutoEntity::getValor)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add).multiply(new BigDecimal(pedidoProduto.getQuantidade())));
         });
 
         BigDecimal valorTotalServicos = servicos.stream()
                 .map(ServicoEntity::getTotalValue)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal valorTotalProdutos = produtos.stream()
-                .map(ProdutoEntity::getValor)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        PedidoEntity pedidoEntity = PedidoEntity.fromPedido(pedido, valorTotalServicos, valorTotalProdutos);
 
-        if(pedido.podeSerCriadoPedido()) {
-            pedidoEntity.setServicos(servicos);
-            pedidoEntity.setFuncionario(funcionarioService.funcionarioPorId(pedido.getFuncionarioId()));
-            pedidoEntity.setCliente(clienteService.clientePorId(pedido.getClienteId()));
-            pedidoRepository.save(pedidoEntity);
-
-            pedidoEntity.getPedidoProdutos().forEach(pedidoProdutos -> {
-                pedidoProdutos.getId().setPedidoId(pedidoEntity.getId());
-                pedidoProdutosService.criaPedidoComProdutos(pedidoProdutos, this);
-            });
-
-            return pedidoEntity;
+        for (List<ServicoProdutosEntity> servicoProdutosEntity : servicoProdutosEntities) {
+            for (ServicoProdutosEntity servicoProdutos : servicoProdutosEntity) {
+                if(servicoProdutos.getQuantidade() > servicoProdutos.getProduto().getQuantidadeEstoque()) {
+                    throw new ProdutosInsuficientesException("Produto com ID " + servicoProdutos.getProduto().getId() + " não possui quantidade suficiente em Estoque!");
+                }
+                produtos.add(pedido.atualizaQuantidadeProduto(servicoProdutos.getProduto(), servicoProdutos.getQuantidade()));
+            }
         }
-        throw new RuntimeException();
+
+        PedidoEntity pedidoEntity = PedidoEntity.fromPedido(pedido, valorTotalServicos, valorTotalProdutos.get());
+
+        pedidoEntity.setServicos(servicos);
+        pedidoEntity.setFuncionario(funcionarioService.funcionarioPorId(pedido.getFuncionarioId()));
+        pedidoEntity.setCliente(clienteService.clientePorId(pedido.getClienteId()));
+        produtosService.atualizarProdutos(produtos);
+        pedidoRepository.save(pedidoEntity);
+
+        pedidoEntity.getPedidoProdutos().forEach(pedidoProdutos -> {
+            pedidoProdutos.getId().setPedidoId(pedidoEntity.getId());
+            pedidoProdutosService.criaPedidoComProdutos(pedidoProdutos, this);
+        });
+
+        return pedidoEntity;
     }
 
     @Override

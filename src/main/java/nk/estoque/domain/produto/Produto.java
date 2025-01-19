@@ -16,17 +16,10 @@ public class Produto {
     private CodigoDeBarras codigoDeBarras;
     private Marca marca;
     private Detalhe detalhe;
-    private boolean emEstoque;
 
-    public Produto(String nome, BigDecimal valor, Integer quantidadeEstoque, CodigoDeBarras codigoDeBarras, Marca marca, Detalhe detalhe) {
-        this.nome = nome;
-        this.valor = valor;
-        this.quantidadeEstoque = quantidadeEstoque;
-        this.codigoDeBarras = codigoDeBarras;
-        this.marca = marca;
-        this.detalhe = detalhe;
+    public Produto() {
+
     }
-
 
     public void adicionaQuantidadeEmEstoque(Integer quantidade) {
         quantidadeEstoque += quantidade;

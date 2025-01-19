@@ -47,6 +47,11 @@ public class ProdutosServiceImpl implements ProdutosService {
     }
 
     @Override
+    public void atualizarProdutos(List<ProdutoEntity> produtoEntities) {
+        produtoRepository.saveAll(produtoEntities);
+    }
+
+    @Override
     public void deletarProduto(Long id) {
         produtoRepository.deleteById(id);
     }

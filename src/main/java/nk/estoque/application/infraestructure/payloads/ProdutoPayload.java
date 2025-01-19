@@ -34,10 +34,14 @@ public class ProdutoPayload {
 
     private Detalhe detalhe;
 
-    private boolean emEstoque;
-
     public Produto toProduto() {
-        Produto produto = new Produto(nome, valor, quantidadeEstoque, codigoDeBarras, marca, detalhe);
+        Produto produto = new Produto();
+        produto.setNome(nome);
+        produto.setValor(valor);
+        produto.setQuantidadeEstoque(quantidadeEstoque);
+        produto.setCodigoDeBarras(codigoDeBarras);
+        produto.setMarca(marca);
+        produto.setDetalhe(detalhe);
         produto.temQuantidadeEmEstoque();
         return produto;
     }
