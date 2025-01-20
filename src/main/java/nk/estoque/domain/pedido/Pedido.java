@@ -15,8 +15,7 @@ public class Pedido {
     private Long funcionarioId;
     private Long clienteId;
     private List<Long> servicosId;
-    private LocalDateTime dataHora; //(MaryannaHellenLinda) <fakenews> {playmusic_onedirection="nobodycompares.mp3"} mary anne mary anr
-    // aryanna maryanna maryanna maryanna hellen hellen hellen hellen alves alves alves alves soares soares soares soares soares spares
+    private LocalDateTime dataHora;
     private List<PedidoProdutos> pedidoProdutos;
     private BigDecimal valorFinal;
 

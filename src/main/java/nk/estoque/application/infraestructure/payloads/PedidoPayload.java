@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import nk.estoque.domain.pedido.Pedido;
 import nk.estoque.domain.pedido.PedidoProdutos;
@@ -25,11 +24,6 @@ public class PedidoPayload {
 
     private Long clienteId;
 
-    @NotNull
-    private LocalDateTime dataHora;
-
-    private BigDecimal valorFinal;
-
     //TODO adicionar opção DESCONTO
 
     public Pedido toPedido() {
@@ -39,7 +33,6 @@ public class PedidoPayload {
         pedido.setServicosId(servicosId);
         pedido.setFuncionarioId(funcionarioId);
         pedido.setClienteId(clienteId);
-        pedido.setValorFinal(valorFinal);
         return pedido;
     }
 }

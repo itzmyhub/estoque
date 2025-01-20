@@ -1,7 +1,7 @@
 package nk.estoque.domain.produto;
 
 import lombok.Data;
-import nk.estoque.domain.produto.models.CodigoDeBarras;
+import nk.estoque.domain.produto.models.CodigoProduto;
 import nk.estoque.domain.produto.models.Detalhe;
 import nk.estoque.domain.produto.models.Marca;
 
@@ -13,7 +13,7 @@ public class Produto {
     private String nome;
     private BigDecimal valor;
     private Integer quantidadeEstoque;
-    private CodigoDeBarras codigoDeBarras;
+    private CodigoProduto codigoProduto;
     private Marca marca;
     private Detalhe detalhe;
 

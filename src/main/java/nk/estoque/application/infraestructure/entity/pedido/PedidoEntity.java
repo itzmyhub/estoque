@@ -39,6 +39,7 @@ public class PedidoEntity {
     @ManyToOne(optional = false,cascade=CascadeType.REMOVE)
     private ClienteEntity cliente;
 
+    @Column(name = "data_e_hora", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
     private LocalDateTime dataHora;
 
     @Column
@@ -47,9 +48,15 @@ public class PedidoEntity {
     public static PedidoEntity fromPedido(Pedido pedido, BigDecimal valorTotalServicos, BigDecimal valorTotalProdutos){
         return PedidoEntity.builder()
                 .valorAdicional(pedido.getValorAdicional())
-                .dataHora(pedido.getDataHora())
                 .valorFinal(pedido.calculaValorFinal(valorTotalServicos, valorTotalProdutos))
                 .pedidoProdutos(PedidoProdutosEntity.fromPedidoProdutosList(pedido.getPedidoProdutos()))
                 .build();
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (dataHora == null) {
+            dataHora = LocalDateTime.now();
+        }
     }
 }

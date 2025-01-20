@@ -3,9 +3,10 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import nk.estoque.application.infraestructure.entity.servico.ServicoProdutosEntity;
 import nk.estoque.domain.produto.Produto;
-import nk.estoque.domain.produto.models.CodigoDeBarras;
+import nk.estoque.domain.produto.models.CodigoProduto;
 import nk.estoque.domain.produto.models.Detalhe;
 import nk.estoque.domain.produto.models.Marca;
+import nk.estoque.domain.produto.models.TipoCodigoProduto;
 
 import java.math.BigDecimal;
 
@@ -28,20 +29,20 @@ public class ProdutoPayload {
     private ServicoProdutosEntity quantidadeEmServico;
 
     @NotNull(message = "O código do produto é obrigatório!")
-    private CodigoDeBarras codigoDeBarras;
+    private String codigoProduto;
 
-    private Marca marca;
+    private String marca;
 
-    private Detalhe detalhe;
+    private String detalhe;
 
     public Produto toProduto() {
         Produto produto = new Produto();
         produto.setNome(nome);
         produto.setValor(valor);
         produto.setQuantidadeEstoque(quantidadeEstoque);
-        produto.setCodigoDeBarras(codigoDeBarras);
-        produto.setMarca(marca);
-        produto.setDetalhe(detalhe);
+        produto.setCodigoProduto(new CodigoProduto(codigoProduto, TipoCodigoProduto.EAN13));
+        produto.setMarca(new Marca(marca));
+        produto.setDetalhe(new Detalhe(detalhe));
         produto.temQuantidadeEmEstoque();
         return produto;
     }

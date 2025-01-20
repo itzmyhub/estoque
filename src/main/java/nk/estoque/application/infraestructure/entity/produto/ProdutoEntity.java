@@ -6,10 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nk.estoque.domain.produto.models.CodigoDeBarras;
+import nk.estoque.domain.produto.models.CodigoProduto;
 import nk.estoque.domain.produto.models.Detalhe;
 import nk.estoque.domain.produto.models.Marca;
-import nk.estoque.domain.produto.models.TipoCodigoDeBarras;
+import nk.estoque.domain.produto.models.TipoCodigoProduto;
 
 import java.math.BigDecimal;
 
@@ -33,7 +33,7 @@ public class ProdutoEntity {
     @Column
     private int quantidadeEstoque;
 
-    private String codigoDeBarras;
+    private String codigoProduto;
 
     private boolean emEstoque;
 
@@ -46,7 +46,7 @@ public class ProdutoEntity {
                 .nome(produto.getNome())
                 .valor(produto.getValor())
                 .quantidadeEstoque(produto.getQuantidadeEstoque())
-                .codigoDeBarras(produto.getCodigoDeBarras().codigo())
+                .codigoProduto(produto.getCodigoProduto().codigo())
                 .emEstoque(produto.temQuantidadeEmEstoque())
                 .marca(produto.getMarca().nome())
                 .detalhe(produto.getDetalhe().descricao())
@@ -65,8 +65,8 @@ public class ProdutoEntity {
         produto.setQuantidadeEstoque(produtoEntity.getQuantidadeEstoque());
         produto.temQuantidadeEmEstoque();
 
-        if (produtoEntity.getCodigoDeBarras() != null) {
-            produto.setCodigoDeBarras(new CodigoDeBarras(produtoEntity.getCodigoDeBarras(), TipoCodigoDeBarras.EAN13));
+        if (produtoEntity.getCodigoProduto() != null) {
+            produto.setCodigoProduto(new CodigoProduto(produtoEntity.getCodigoProduto(), TipoCodigoProduto.EAN13));
         }
 
         if (produtoEntity.getMarca() != null) {
