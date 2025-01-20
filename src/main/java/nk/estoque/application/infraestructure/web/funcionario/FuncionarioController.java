@@ -1,9 +1,10 @@
 package nk.estoque.application.infraestructure.web.funcionario;
 
 import jakarta.validation.Valid;
-import nk.estoque.application.infraestructure.entity.Funcionario;
-import nk.estoque.domain.funcionario.TodosFuncionarios;
-import org.springframework.beans.factory.annotation.Autowired;
+import nk.estoque.application.infraestructure.entity.funcionario.FuncionarioEntity;
+import nk.estoque.application.infraestructure.payloads.FuncionarioPayload;
+import nk.estoque.domain.funcionario.Funcionario;
+import nk.estoque.application.infraestructure.service.funcionario.FuncionarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,34 +18,32 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping("/funcionarios")
 public class FuncionarioController {
 
-    private final TodosFuncionarios todosFuncionarios;
+    private final FuncionarioService funcionarioService;
 
-    public FuncionarioController(TodosFuncionarios todosFuncionarios) {
-        this.todosFuncionarios = todosFuncionarios;
+    public FuncionarioController(FuncionarioService funcionarioService) {
+        this.funcionarioService = funcionarioService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Funcionario>> get() {
-        return new ResponseEntity<>(todosFuncionarios.listaPaginada(), OK);
+    public ResponseEntity<List<FuncionarioEntity>> get() {
+        return new ResponseEntity<>(funcionarioService.listaPaginada(), OK);
     }
 
     @PostMapping
-    public ResponseEntity<Funcionario> post(@Valid @RequestBody FuncionarioPayload funcionarioPayload) {
-        Funcionario funcionario = new Funcionario();
-        funcionario.geraFuncionario(funcionarioPayload);
-        return new ResponseEntity<>(todosFuncionarios.criarFuncionario(funcionario), CREATED);
+    public ResponseEntity<FuncionarioEntity> post(@Valid @RequestBody FuncionarioPayload funcionarioPayload) {
+        Funcionario funcionario = funcionarioPayload.toFuncionario();
+        return new ResponseEntity<>(funcionarioService.criarFuncionario(funcionario), CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Funcionario> put(@PathVariable Long id, @Valid @RequestBody FuncionarioPayload funcionarioPayload) {
-        Funcionario funcionario = new Funcionario();
-        funcionario.geraFuncionario(funcionarioPayload);
-        return new ResponseEntity<>(todosFuncionarios.atualizarFuncionario(id, funcionario), OK);
+    public ResponseEntity<FuncionarioEntity> put(@PathVariable Long id, @Valid @RequestBody FuncionarioPayload funcionarioPayload) {
+        Funcionario funcionario = funcionarioPayload.toFuncionario();
+        return new ResponseEntity<>(funcionarioService.atualizarFuncionario(id, funcionario), OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
-        todosFuncionarios.excluirFuncionario(id);
+        funcionarioService.excluirFuncionario(id);
         return new ResponseEntity<>(NO_CONTENT);
     }
 }

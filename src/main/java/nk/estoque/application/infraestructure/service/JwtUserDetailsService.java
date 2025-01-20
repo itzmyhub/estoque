@@ -1,6 +1,6 @@
 package nk.estoque.application.infraestructure.service;
 
-import nk.estoque.application.infraestructure.entity.Usuario;
+import nk.estoque.application.infraestructure.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +23,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario user = usuarioService.getByEmail(email);
+        UsuarioEntity user = usuarioService.getByEmail(email);
 
         if (user.getEmail().equals(email)) {
             return new User(email, user.getPassword(),
