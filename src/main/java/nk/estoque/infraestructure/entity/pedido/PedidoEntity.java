@@ -5,13 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nk.estoque.domain.models.pedido.StatusPedido;
 import nk.estoque.infraestructure.entity.cliente.ClienteEntity;
 import nk.estoque.infraestructure.entity.funcionario.FuncionarioEntity;
 import nk.estoque.infraestructure.entity.servico.ServicoEntity;
-import nk.estoque.domain.models.pedido.Pedido;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,8 +28,8 @@ public class PedidoEntity {
     @Column
     private BigDecimal valorAdicional;
 
-    @OneToMany(mappedBy = "pedido", cascade=CascadeType.REMOVE)
-    private List<PedidoProdutosEntity> pedidoProdutos;
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PedidoProdutosEntity> pedidoProdutos = new ArrayList<>();
 
     @ManyToMany
     private List<ServicoEntity> servicos;
@@ -42,16 +43,12 @@ public class PedidoEntity {
     @Column(name = "data_e_hora", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
     private LocalDateTime dataHora;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private StatusPedido status;
+
     @Column
     private BigDecimal valorFinal;
-
-    public static PedidoEntity fromPedido(Pedido pedido, BigDecimal valorTotalServicos, BigDecimal valorTotalProdutos){
-        return PedidoEntity.builder()
-                .valorAdicional(pedido.getValorAdicional())
-                .valorFinal(pedido.calculaValorFinal(valorTotalServicos, valorTotalProdutos))
-                .pedidoProdutos(PedidoProdutosEntity.fromPedidoProdutosList(pedido.getPedidoProdutos()))
-                .build();
-    }
 
     @PrePersist
     public void prePersist() {

@@ -21,6 +21,20 @@ public class Produto {
 
     }
 
+    public void atualizarReserva(int quantidadeAntiga, int novaQuantidade) {
+        int diferenca = novaQuantidade - quantidadeAntiga;
+
+        if (diferenca > 0) {
+            reservar(diferenca);
+        } else if (diferenca < 0) {
+            devolver(-diferenca);
+        }
+    }
+
+    public void devolver(int quantidade) {
+        this.quantidadeEstoque += quantidade;
+    }
+
     public void reservar(int quantidade) {
         validarQuantidade(quantidade);
         if (quantidade > quantidadeEstoque) {
@@ -31,28 +45,13 @@ public class Produto {
         this.quantidadeEstoque -= quantidade;
     }
 
-    public void adicionaQuantidadeEmEstoque(int quantidade) {
-        validarQuantidade(quantidade);
-        this.quantidadeEstoque += quantidade;
-    }
-
-    public void subtraiQuantidadeEmEstoque(int quantidade) {
-        validarQuantidade(quantidade);
-        if (quantidade > quantidadeEstoque) {
-            throw new IllegalArgumentException(
-                    String.format("Não há estoque suficiente do produto %s", nome)
-            );
-        }
-        this.quantidadeEstoque -= quantidade;
-    }
-
     public boolean isEmEstoque() {
         return quantidadeEstoque > 0;
     }
 
     private void validarQuantidade(int quantidade) {
-        if (quantidade <= 0) {
-            throw new IllegalArgumentException("Quantidade deve ser maior que zero.");
+        if (quantidade < 0) {
+            throw new IllegalArgumentException("Quantidade deve ser maior que ou igual a zero.");
         }
     }
 

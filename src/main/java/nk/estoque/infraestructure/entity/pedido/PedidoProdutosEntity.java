@@ -1,51 +1,30 @@
 package nk.estoque.infraestructure.entity.pedido;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import nk.estoque.infraestructure.entity.produto.ProdutoEntity;
-import nk.estoque.domain.models.pedidoProdutos.PedidoProdutos;
-
-import java.util.List;
-
 @Entity
 @Data
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
+@Builder
+@NoArgsConstructor
 public class PedidoProdutosEntity {
+
     @EmbeddedId
-    PedidoProdutosKey id;
+    PedidoProdutosKey id = new PedidoProdutosKey();
 
-    @ManyToOne
-    @MapsId("produtoId")
-    @JoinColumn(name = "produto_id")
-    ProdutoEntity produto;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("pedidoId")
-    @JoinColumn(name = "pedido_id")
-    @JsonIgnore
+    @JoinColumn(name = "pedido_id", nullable = false)
     PedidoEntity pedido;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("produtoId")
+    @JoinColumn(name = "produto_id", nullable = false)
+    ProdutoEntity produto;
+
+    @Column(nullable = false)
     int quantidade;
-
-    public PedidoProdutosEntity() {
-
-    }
-
-    public static PedidoProdutosEntity fromPedidoProdutos(PedidoProdutos pedidoProdutos) {
-        return PedidoProdutosEntity.builder()
-                .id(new PedidoProdutosKey(pedidoProdutos.getProdutoId(), pedidoProdutos.getPedidoId()))
-                .quantidade(pedidoProdutos.getQuantidade())
-                .build();
-    }
-
-    public static List<PedidoProdutosEntity> fromPedidoProdutosList(List<PedidoProdutos> pedidoProdutosList) {
-        return pedidoProdutosList
-                .stream()
-                .map(PedidoProdutosEntity::fromPedidoProdutos)
-                .toList();
-    }
 }

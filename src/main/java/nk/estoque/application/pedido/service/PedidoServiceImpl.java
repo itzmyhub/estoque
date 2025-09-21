@@ -1,5 +1,6 @@
 package nk.estoque.application.pedido.service;
 
+import nk.estoque.application.pedido.useCase.SalvarPedidoUseCase;
 import nk.estoque.domain.models.pedido.Pedido;
 import nk.estoque.domain.models.pedidoProdutos.PedidoProdutos;
 import nk.estoque.domain.repositories.PedidoRepository;
@@ -11,9 +12,11 @@ import org.springframework.stereotype.Service;
 public class PedidoServiceImpl implements PedidoService {
 
     private final PedidoRepository pedidoRepository;
+    private final SalvarPedidoUseCase salvarPedidoUseCase;
 
-    public PedidoServiceImpl(PedidoRepository pedidoRepository) {
+    public PedidoServiceImpl(PedidoRepository pedidoRepository, SalvarPedidoUseCase salvarPedidoUseCase) {
         this.pedidoRepository = pedidoRepository;
+        this.salvarPedidoUseCase = salvarPedidoUseCase;
     }
 
     @Override
@@ -33,8 +36,18 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public Pedido criarPedido(Pedido pedido) {
-        // JPA vai salvar pedido + produtos automaticamente
-        return pedidoRepository.save(pedido);
+        return salvarPedidoUseCase.executar(pedido);
+    }
+
+    @Override
+    public Pedido removerServico(Long pedidoId, Long servicoId) {
+
+        return pedidoRepository.removerServico(pedidoId, servicoId);
+    }
+
+    @Override
+    public Pedido adicionarServico(Long pedidoId, Long servicoId) {
+        return null;
     }
 
     @Override
@@ -47,7 +60,6 @@ public class PedidoServiceImpl implements PedidoService {
         existente.setFuncionarioId(pedido.getFuncionarioId());
         existente.setClienteId(pedido.getClienteId());
 
-        // atualiza a lista de produtos (JPA faz o merge)
         existente.getPedidoProdutos().clear();
         existente.getPedidoProdutos().addAll(pedido.getPedidoProdutos());
 

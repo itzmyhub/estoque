@@ -8,12 +8,10 @@ import nk.estoque.infraestructure.entity.produto.ProdutoEntity;
 import nk.estoque.infraestructure.entity.servico.ServicoEntity;
 import nk.estoque.infraestructure.entity.servico.ServicoProdutosEntity;
 import nk.estoque.infraestructure.entity.servico.ServicoProdutosKey;
-import nk.estoque.infraestructure.utils.exceptions.IdNaoEncontradoException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
 
 @Component
 public class ServicoMapper {
@@ -32,10 +30,10 @@ public class ServicoMapper {
                 .build();
 
         if (servico.getServicoProdutos() != null) {
-            List<ServicoProdutosEntity> produtosEntity = servico.getServicoProdutos().stream()
+            List<ServicoProdutosEntity> servicoProdutosEntity = servico.getServicoProdutos().stream()
                     .map(sp -> toEntity(sp, entity))
                     .toList();
-            entity.setServicoProdutos(produtosEntity);
+            entity.setServicoProdutos(servicoProdutosEntity);
         }
 
         return entity;
@@ -43,7 +41,6 @@ public class ServicoMapper {
 
     private ServicoProdutosEntity toEntity(ServicoProdutos sp, ServicoEntity servicoEntity) {
         ServicoProdutosKey key = new ServicoProdutosKey();
-        key.setServicoId(servicoEntity.getId());
         key.setProdutoId(sp.getProdutoId());
 
         ProdutoEntity produtoRef = entityManager.getReference(ProdutoEntity.class, sp.getProdutoId());

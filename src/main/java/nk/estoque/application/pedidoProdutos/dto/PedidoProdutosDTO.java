@@ -1,5 +1,7 @@
 package nk.estoque.application.pedidoProdutos.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import nk.estoque.domain.models.pedidoProdutos.PedidoProdutos;
 
@@ -7,8 +9,11 @@ import nk.estoque.domain.models.pedidoProdutos.PedidoProdutos;
 public class PedidoProdutosDTO {
 
     private Long pedidoId;
+    @NotNull(message = "produtoId é obrigatório")
     private Long produtoId;
-    private int quantidade;
+
+    @NotNull @Min(1)
+    private Integer quantidade;
 
     public PedidoProdutos toDomain() {
         return new PedidoProdutos(pedidoId, produtoId, quantidade);

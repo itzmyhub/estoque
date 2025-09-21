@@ -8,10 +8,8 @@ import nk.estoque.domain.models.servicoProdutos.ServicoProdutos;
 import nk.estoque.domain.repositories.ServicoRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 public class SalvarServicoUseCase {
@@ -31,37 +29,30 @@ public class SalvarServicoUseCase {
     }
 
     @Transactional
-    public Servico executar(Servico servico) {
-        validar(servico);
+    public Servico executarCriacao(Servico servico) {
+        List<Long> ids = servico.getServicoProdutos()
+                .stream().map(ServicoProdutos::getProdutoId).toList();
 
-        Map<Long, Produto> produtoMap = produtoService.produtosPorId(
-                servico.getServicoProdutos().stream()
-                        .map(ServicoProdutos::getProdutoId)
-                        .toList()
-        ).stream().collect(Collectors.toMap(Produto::getId, Function.identity()));
+        List<Produto> produtos = produtoService.produtosPorId(ids);
 
-        verificarProdutosExistentes(servico, produtoMap);
+        return calcularValorFinal(servico, produtos);
+    }
 
-        servico.getServicoProdutos().forEach(sp ->
-                produtoMap.get(sp.getProdutoId()).reservar(sp.getQuantidade())
-        );
+    @Transactional
+    public Servico executarAtualizacao(Servico servicoAntigo, Servico servicoNovo) {
+        List<Long> ids = servicoNovo.getServicoProdutos()
+                .stream().map(ServicoProdutos::getProdutoId).toList();
+        List<Produto> produtos = produtoService.produtosPorId(ids);
 
-        produtoService.atualizarProdutos(new ArrayList<>(produtoMap.values()));
+        servicoAntigo.setNome(servicoNovo.getNome());
+        servicoAntigo.setMaoDeObra(servicoNovo.getMaoDeObra());
+        servicoAntigo.setServicoProdutos(servicoNovo.getServicoProdutos());
 
-        servico.setValorTotal(calculadora.calcular(servico, produtoMap));
+        return calcularValorFinal(servicoAntigo, produtos);
+    }
 
+    private Servico calcularValorFinal(Servico servico, List<Produto> produtos) {
+        servico.setValorTotal(calculadora.calcular(servico, produtos));
         return servicoRepository.save(servico);
-    }
-
-    private void validar(Servico servico) {
-        if (servico.getServicoProdutos() == null || servico.getServicoProdutos().isEmpty()) {
-            throw new IllegalArgumentException("Um serviço precisa ter ao menos um produto.");
-        }
-    }
-
-    private void verificarProdutosExistentes(Servico servico, Map<Long, Produto> produtoMap) {
-        if (produtoMap.size() != servico.getServicoProdutos().size()) {
-            throw new IllegalStateException("Um ou mais produtos não foram encontrados para este serviço.");
-        }
     }
 }

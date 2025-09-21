@@ -15,6 +15,10 @@ public interface PedidoService {
 
     Pedido criarPedido(Pedido pedido);
 
+    Pedido removerServico(Long pedidoId, Long servicoId);
+
+    Pedido adicionarServico(Long pedidoId, Long servicoId);
+
     Pedido atualizarPedido(Long id, Pedido pedido);
 
     void deletarPedido(Long id);

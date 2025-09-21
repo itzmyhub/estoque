@@ -19,4 +19,8 @@ public interface PedidoRepository {
     Page<Pedido> findByClienteId(Long clienteId, Pageable pageable);
 
     Page<Pedido> findByFuncionarioId(Long funcionarioId, Pageable pageable);
+
+    Pedido removerServico(Long pedidoId, Long servicoId);
+
+    Pedido adicionarServico(Long pedidoId, Long servicoId);
 }

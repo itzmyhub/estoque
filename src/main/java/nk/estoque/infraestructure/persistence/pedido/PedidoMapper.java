@@ -1,12 +1,16 @@
 package nk.estoque.infraestructure.persistence.pedido;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import nk.estoque.domain.models.pedido.Pedido;
+import nk.estoque.domain.models.pedidoProdutos.PedidoProdutos;
 import nk.estoque.infraestructure.entity.cliente.ClienteEntity;
 import nk.estoque.infraestructure.entity.funcionario.FuncionarioEntity;
 import nk.estoque.infraestructure.entity.pedido.PedidoEntity;
+import nk.estoque.infraestructure.entity.pedido.PedidoProdutosEntity;
+import nk.estoque.infraestructure.entity.pedido.PedidoProdutosKey;
+import nk.estoque.infraestructure.entity.produto.ProdutoEntity;
 import nk.estoque.infraestructure.entity.servico.ServicoEntity;
-import nk.estoque.infraestructure.persistence.pedidoProdutos.PedidoProdutosMapper;
-import nk.estoque.infraestructure.persistence.servico.ServicoMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,11 +18,8 @@ import java.util.List;
 @Component
 public class PedidoMapper {
 
-    private final PedidoProdutosMapper pedidoProdutosMapper;
-
-    public PedidoMapper(PedidoProdutosMapper pedidoProdutosMapper) {
-        this.pedidoProdutosMapper = pedidoProdutosMapper;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public PedidoEntity toEntity(Pedido pedido) {
         PedidoEntity entity = new PedidoEntity();
@@ -27,6 +28,7 @@ public class PedidoMapper {
         entity.setValorAdicional(pedido.getValorAdicional());
         entity.setValorFinal(pedido.getValorFinal());
         entity.setDataHora(pedido.getDataHora());
+        entity.setStatus(pedido.getStatus());
 
         if (pedido.getServicosId() != null) {
             List<ServicoEntity> servicos = pedido.getServicosId().stream()
@@ -40,11 +42,10 @@ public class PedidoMapper {
         }
 
         if (pedido.getPedidoProdutos() != null) {
-            entity.setPedidoProdutos(
-                    pedido.getPedidoProdutos().stream()
-                            .map(pedidoProdutosMapper::toEntity)
-                            .toList()
-            );
+            List<PedidoProdutosEntity> pedidoProdutosEntity = pedido.getPedidoProdutos().stream()
+                    .map(pp -> toEntity(pp, entity))
+                    .toList();
+            entity.setPedidoProdutos(pedidoProdutosEntity);
         }
 
         if (pedido.getClienteId() != null) {
@@ -62,7 +63,20 @@ public class PedidoMapper {
         return entity;
     }
 
-    // Converte Entity -> Domain
+    private PedidoProdutosEntity toEntity(PedidoProdutos pp, PedidoEntity pedidoEntity) {
+        PedidoProdutosKey key = new PedidoProdutosKey();
+        key.setProdutoId(pp.getProdutoId());
+
+        ProdutoEntity produtoRef = entityManager.getReference(ProdutoEntity.class, pp.getProdutoId());
+
+        return PedidoProdutosEntity.builder()
+                .id(key)
+                .pedido(pedidoEntity)
+                .produto(produtoRef)
+                .quantidade(pp.getQuantidade())
+                .build();
+    }
+
     public Pedido toDomain(PedidoEntity entity) {
         Pedido pedido = new Pedido();
 
@@ -70,8 +84,8 @@ public class PedidoMapper {
         pedido.setValorAdicional(entity.getValorAdicional());
         pedido.setValorFinal(entity.getValorFinal());
         pedido.setDataHora(entity.getDataHora());
+        pedido.setStatus(entity.getStatus());
 
-        // Mapeia IDs de serviços
         if (entity.getServicos() != null) {
             pedido.setServicosId(
                     entity.getServicos().stream()
@@ -80,16 +94,14 @@ public class PedidoMapper {
             );
         }
 
-        // Mapeia produtos
         if (entity.getPedidoProdutos() != null) {
             pedido.setPedidoProdutos(
                     entity.getPedidoProdutos().stream()
-                            .map(pedidoProdutosMapper::toDomain)
+                            .map(this::toDomain)
                             .toList()
             );
         }
 
-        // Mapeia IDs de cliente e funcionário
         if (entity.getCliente() != null) {
             pedido.setClienteId(entity.getCliente().getId());
         }
@@ -99,6 +111,10 @@ public class PedidoMapper {
         }
 
         return pedido;
+    }
+
+    private PedidoProdutos toDomain(PedidoProdutosEntity entity) {
+        return new PedidoProdutos(entity.getPedido().getId(), entity.getProduto().getId(), entity.getQuantidade());
     }
 }
 

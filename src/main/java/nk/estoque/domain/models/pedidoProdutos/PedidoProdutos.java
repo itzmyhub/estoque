@@ -11,7 +11,7 @@ public class PedidoProdutos {
 
     private int quantidade;
 
-    public PedidoProdutos(Long produtoId, Long pedidoId, int quantidade) {
+    public PedidoProdutos(Long pedidoId, Long produtoId, int quantidade) {
         this.produtoId = produtoId;
         this.pedidoId = pedidoId;
         this.quantidade = quantidade;

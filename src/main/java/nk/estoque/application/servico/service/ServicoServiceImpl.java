@@ -44,17 +44,16 @@ public class ServicoServiceImpl implements ServicoService {
 
     @Override
     public Servico criar(Servico servico) {
-        return salvarServicoUseCase.executar(servico);
+        return salvarServicoUseCase.executarCriacao(servico);
     }
 
     @Override
     public Servico atualizarServico(Long id, Servico novoServico) {
-        Servico servico = servicoRepository.servicoPorId(id);
-        if (servico == null) {
+        Servico servicoAntigo = servicoRepository.servicoPorId(id);
+        if (servicoAntigo == null) {
             throw new EntityNotFoundException("Serviço não encontrado com id " + id);
         }
-        servico.atualizar(novoServico);
-        return salvarServicoUseCase.executar(servico);
+        return salvarServicoUseCase.executarAtualizacao(servicoAntigo, novoServico);
     }
 
     @Override

@@ -11,6 +11,7 @@ import nk.estoque.infraestructure.entity.produto.ProdutoEntity;
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class ServicoProdutosEntity {
     @EmbeddedId
     ServicoProdutosKey id;
@@ -28,9 +29,5 @@ public class ServicoProdutosEntity {
     ServicoEntity servico;
 
     int quantidade;
-
-    public ServicoProdutosEntity() {
-
-    }
 
 }

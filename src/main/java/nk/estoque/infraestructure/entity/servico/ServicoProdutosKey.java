@@ -2,10 +2,7 @@ package nk.estoque.infraestructure.entity.servico;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -14,6 +11,7 @@ import java.io.Serializable;
 @Setter
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ServicoProdutosKey implements Serializable {
     @Column(name = "produto_id")
     Long produtoId;
@@ -21,7 +19,4 @@ public class ServicoProdutosKey implements Serializable {
     @Column(name = "servico_id")
     Long servicoId;
 
-    public ServicoProdutosKey() {
-
-    }
 }

@@ -2,10 +2,7 @@ package nk.estoque.infraestructure.entity.pedido;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -14,15 +11,13 @@ import java.io.Serializable;
 @Setter
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class PedidoProdutosKey implements Serializable {
+
+    @Column(name = "pedido_id")
+    Long pedidoId;
 
     @Column(name = "produto_id")
     Long produtoId;
 
-    @Column(name = "pedido_id")
-    Long PedidoId;
-
-    public PedidoProdutosKey() {
-
-    }
 }

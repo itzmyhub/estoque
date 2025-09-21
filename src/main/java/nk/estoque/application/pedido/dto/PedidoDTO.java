@@ -10,11 +10,12 @@ import java.util.stream.Collectors;
 
 import nk.estoque.application.pedidoProdutos.dto.PedidoProdutosDTO;
 import nk.estoque.domain.models.pedido.Pedido;
-import nk.estoque.domain.models.pedidoProdutos.PedidoProdutos;
+import nk.estoque.domain.models.pedido.StatusPedido;
 
 @Data
 public class PedidoDTO {
 
+    private Long id;
     @NotNull(message = "O valor é obrigatório!")
     @DecimalMin(value = "0.00", message = "O valor deve ser maior ou igual a zero!")
     private BigDecimal valorAdicional;
@@ -27,7 +28,11 @@ public class PedidoDTO {
 
     private Long clienteId;
 
-    public Pedido toPedido() {
+    private StatusPedido statusPedido;
+
+    private BigDecimal valorFinal;
+
+    public Pedido toDomain() {
         Pedido pedido = new Pedido();
         pedido.setValorAdicional(valorAdicional);
         pedido.setServicosId(servicosId);
@@ -45,12 +50,15 @@ public class PedidoDTO {
         return pedido;
     }
 
-    public static PedidoDTO fromPedido(Pedido pedido) {
+    public static PedidoDTO fromDomain(Pedido pedido) {
         PedidoDTO dto = new PedidoDTO();
+        dto.setId(pedido.getId());
         dto.setValorAdicional(pedido.getValorAdicional());
         dto.setServicosId(pedido.getServicosId());
         dto.setFuncionarioId(pedido.getFuncionarioId());
         dto.setClienteId(pedido.getClienteId());
+        dto.setStatusPedido(pedido.getStatus());
+        dto.setValorFinal(pedido.getValorFinal());
 
         if (pedido.getPedidoProdutos() != null) {
             dto.setPedidoProdutos(

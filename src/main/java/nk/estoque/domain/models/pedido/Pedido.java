@@ -19,9 +19,15 @@ public class Pedido {
     private LocalDateTime dataHora;
     private List<PedidoProdutos> pedidoProdutos;
     private BigDecimal valorFinal;
+    private StatusPedido status;
 
-    public BigDecimal calculaValorFinal(BigDecimal valorTotalServicos, BigDecimal valorTotalProdutos) {
-        return valorAdicional.add(valorTotalProdutos.add(valorTotalServicos));
+    public void alterarStatus(StatusPedido novoStatus) {
+        if (!status.podeTransitarPara(novoStatus)) {
+            throw new IllegalStateException(
+                    "Transição inválida de " + status + " para " + novoStatus
+            );
+        }
+        this.status = novoStatus;
     }
 
 }

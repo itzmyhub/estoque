@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +17,7 @@ import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/pedidos")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3039", methods = {RequestMethod.PUT, RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
 public class PedidoController {
 
     private final PedidoService pedidoService;
@@ -31,7 +30,7 @@ public class PedidoController {
     public ResponseEntity<List<PedidoDTO>> get(@PageableDefault Pageable pageable) {
         List<PedidoDTO> dtos = pedidoService.listaPaginada(pageable)
                 .stream()
-                .map(PedidoDTO::fromPedido)
+                .map(PedidoDTO::fromDomain)
                 .toList();
         return new ResponseEntity<>(dtos, OK);
     }
@@ -39,21 +38,39 @@ public class PedidoController {
     @GetMapping("/{id}")
     public ResponseEntity<PedidoDTO> getById(@PathVariable Long id) {
         Pedido pedido = pedidoService.pedidoPorId(id);
-        return new ResponseEntity<>(PedidoDTO.fromPedido(pedido), OK);
+        return new ResponseEntity<>(PedidoDTO.fromDomain(pedido), OK);
     }
 
     @PostMapping
     public ResponseEntity<PedidoDTO> post(@Valid @RequestBody PedidoDTO pedidoDTO) {
-        Pedido pedido = pedidoDTO.toPedido();
-        Pedido criado = pedidoService.criarPedido(pedido);
-        return new ResponseEntity<>(PedidoDTO.fromPedido(criado), CREATED);
+        Pedido novoPedido = pedidoDTO.toDomain();
+        Pedido criado = pedidoService.criarPedido(novoPedido);
+        return new ResponseEntity<>(PedidoDTO.fromDomain(criado), CREATED);
+    }
+
+    @PostMapping("/{id}/servicos")
+    public ResponseEntity<PedidoDTO> adicionarServico(
+            @PathVariable Long id,
+            @RequestBody Long servicoId) {
+
+        Pedido atualizado = pedidoService.adicionarServico(id, servicoId);
+        return ResponseEntity.ok(PedidoDTO.fromDomain(atualizado));
+    }
+
+    @DeleteMapping("/{id}/servicos/{servicoId}")
+    public ResponseEntity<PedidoDTO> removerServico(
+            @PathVariable Long id,
+            @PathVariable Long servicoId) {
+
+        Pedido atualizado = pedidoService.removerServico(id, servicoId);
+        return ResponseEntity.ok(PedidoDTO.fromDomain(atualizado));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PedidoDTO> put(@PathVariable Long id, @Valid @RequestBody PedidoDTO pedidoDTO) {
-        Pedido pedido = pedidoDTO.toPedido();
+        Pedido pedido = pedidoDTO.toDomain();
         Pedido atualizado = pedidoService.atualizarPedido(id, pedido);
-        return new ResponseEntity<>(PedidoDTO.fromPedido(atualizado), OK);
+        return new ResponseEntity<>(PedidoDTO.fromDomain(atualizado), OK);
     }
 
     @DeleteMapping("/{id}")
@@ -68,7 +85,7 @@ public class PedidoController {
             @Valid @RequestBody PedidoProdutosDTO produtoDTO
     ) {
         Pedido atualizado = pedidoService.adicionarProduto(pedidoId, produtoDTO.toDomain());
-        return ResponseEntity.ok(PedidoDTO.fromPedido(atualizado));
+        return ResponseEntity.ok(PedidoDTO.fromDomain(atualizado));
     }
 
     @DeleteMapping("/{pedidoId}/produtos/{produtoId}")
@@ -77,6 +94,6 @@ public class PedidoController {
             @PathVariable Long produtoId
     ) {
         Pedido atualizado = pedidoService.removerProduto(pedidoId, produtoId);
-        return ResponseEntity.ok(PedidoDTO.fromPedido(atualizado));
+        return ResponseEntity.ok(PedidoDTO.fromDomain(atualizado));
     }
 }

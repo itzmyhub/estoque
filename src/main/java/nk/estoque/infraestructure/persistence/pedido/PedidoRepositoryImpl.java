@@ -55,4 +55,21 @@ public class PedidoRepositoryImpl implements PedidoRepository {
         return persistence.findByFuncionarioId(funcionarioId, pageable)
                 .map(mapper::toDomain);
     }
+
+    @Override
+    public Pedido removerServico(Long pedidoId, Long servicoId) {
+        PedidoEntity pedido = persistence.findById(pedidoId).orElseThrow(() -> new RuntimeException("Pedido não encontrado: " + pedidoId));
+        boolean removed = pedido.getServicos().removeIf(servico -> servico.getId().equals(servicoId));
+        if (!removed) {
+            throw new IllegalArgumentException("Serviço " + servicoId + " não encontrado no pedido " + pedidoId);
+        }
+        PedidoEntity atualizado = persistence.save(pedido);
+
+        return mapper.toDomain(atualizado);
+    }
+
+    @Override
+    public Pedido adicionarServico(Long pedidoId, Long servicoId) {
+        return null;
+    }
 }

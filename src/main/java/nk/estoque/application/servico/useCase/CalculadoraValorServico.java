@@ -7,21 +7,30 @@ import nk.estoque.infraestructure.utils.exceptions.IdNaoEncontradoException;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Component
 public class CalculadoraValorServico {
 
-    public BigDecimal calcular(Servico servico, Map<Long, Produto> produtoMap) {
+    public BigDecimal calcular(Servico servico, List<Produto> produtos) {
         BigDecimal soma = BigDecimal.ZERO;
+
         for (ServicoProdutos sp : servico.getServicoProdutos()) {
-            Produto produto = produtoMap.get(sp.getProdutoId());
-            if (produto == null) {
-                throw new IdNaoEncontradoException("produto não encontrado " + sp.getProdutoId());
-            }
-            soma = soma.add(produto.getValor().multiply(BigDecimal.valueOf(sp.getQuantidade())));
+            Produto produto = produtos.stream()
+                    .filter(p -> p.getId().equals(sp.getProdutoId()))
+                    .findFirst()
+                    .orElseThrow(() -> new IdNaoEncontradoException(
+                            "Produto não encontrado " + sp.getProdutoId()));
+
+            soma = soma.add(
+                    produto.getValor().multiply(BigDecimal.valueOf(sp.getQuantidade()))
+            );
         }
-        return soma.add(Optional.ofNullable(servico.getMaoDeObra()).orElse(BigDecimal.ZERO));
+
+        return soma.add(
+                Optional.ofNullable(servico.getMaoDeObra()).orElse(BigDecimal.ZERO)
+        );
     }
 }
